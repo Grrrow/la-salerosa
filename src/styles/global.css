@@ -1,0 +1,317 @@
+@import "tailwindcss";
+
+@theme {
+	--color-caoba: #160402;
+	--color-carmesi: #5E1207;
+	--color-ambar: #F29F38;
+	--color-crema: #F7E6CA;
+	--color-marfil: #FFFDF9;
+	--color-terracota: #D4A383;
+
+	--font-script: "Pinyon Script", cursive;
+	--font-serif: "Cinzel", Georgia, serif;
+	--font-sans: "Montserrat", system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+	html,
+	body {
+		background-color: #160402;
+		color: #FFFDF9;
+		font-family: var(--font-sans);
+		overflow: hidden;
+		height: 100dvh;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+}
+
+/* Sound wave bars animation (centered harmonic waveform) */
+@keyframes sound-wave {
+	0%, 100% {
+		transform: scaleY(0.35);
+	}
+	50% {
+		transform: scaleY(1);
+	}
+}
+
+.sound-bar {
+	transform-origin: center;
+	transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sound-bar:nth-child(1),
+.sound-bar:nth-child(5) {
+	transform: scaleY(0.38);
+}
+
+.sound-bar:nth-child(2),
+.sound-bar:nth-child(4) {
+	transform: scaleY(0.68);
+}
+
+.sound-bar:nth-child(3) {
+	transform: scaleY(0.95);
+}
+
+[data-sound-active="true"] .sound-bar {
+	background-color: #F29F38;
+	box-shadow: 0 0 8px rgba(242, 159, 56, 0.8);
+	animation: sound-wave 0.95s ease-in-out infinite;
+}
+
+[data-sound-active="true"] .sound-bar:nth-child(1) {
+	animation-delay: 0.1s;
+}
+
+[data-sound-active="true"] .sound-bar:nth-child(2) {
+	animation-delay: 0.3s;
+}
+
+[data-sound-active="true"] .sound-bar:nth-child(3) {
+	animation-delay: 0s;
+}
+
+[data-sound-active="true"] .sound-bar:nth-child(4) {
+	animation-delay: 0.4s;
+}
+
+[data-sound-active="true"] .sound-bar:nth-child(5) {
+	animation-delay: 0.2s;
+}
+
+/* Warm Incandescent Neon Glow for "LA SALEROSA" & "MAR MORÁN" */
+@keyframes neon-pulse {
+	0%, 100% {
+		filter:
+			drop-shadow(0 0 6px rgba(255, 253, 249, 0.45))
+			drop-shadow(0 0 18px rgba(242, 159, 56, 0.55))
+			drop-shadow(0 0 42px rgba(242, 110, 20, 0.35))
+			drop-shadow(0 4px 20px rgba(22, 4, 2, 0.9));
+	}
+	50% {
+		filter:
+			drop-shadow(0 0 10px rgba(255, 253, 249, 0.75))
+			drop-shadow(0 0 26px rgba(242, 159, 56, 0.82))
+			drop-shadow(0 0 58px rgba(255, 115, 25, 0.52))
+			drop-shadow(0 4px 20px rgba(22, 4, 2, 0.9));
+	}
+}
+
+.warm-neon-logo {
+	animation: neon-pulse 4s ease-in-out infinite;
+}
+
+.neon-halo-layer {
+	opacity: 0.35;
+	filter: blur(5px);
+}
+
+.neon-subtitle {
+	text-shadow:
+		0 0 10px rgba(247, 230, 202, 0.55),
+		0 0 24px rgba(242, 159, 56, 0.45),
+		0 2px 12px rgba(22, 4, 2, 0.95);
+}
+
+/* Live Stage Light Beams (Haces de luz fuego en escena) */
+@keyframes beam-breathe-right {
+	0%, 100% {
+		opacity: 0.35;
+		transform: translate3d(0, 0, 0) scale(1);
+	}
+	50% {
+		opacity: 0.65;
+		transform: translate3d(-1.5%, 1.5%, 0) scale(1.06);
+	}
+}
+
+@keyframes beam-breathe-left {
+	0%, 100% {
+		opacity: 0.25;
+		transform: translate3d(0, 0, 0) scale(1);
+	}
+	50% {
+		opacity: 0.5;
+		transform: translate3d(2%, -1.5%, 0) scale(1.05);
+	}
+}
+
+.stage-beam-right {
+	background: radial-gradient(
+		ellipse 32% 55% at 72% 28%,
+		rgba(255, 165, 55, 0.38) 0%,
+		rgba(242, 95, 22, 0.18) 42%,
+		transparent 75%
+	);
+	mix-blend-mode: screen;
+	animation: beam-breathe-right 5.5s ease-in-out infinite;
+}
+
+.stage-beam-left {
+	background: radial-gradient(
+		ellipse 38% 45% at 24% 55%,
+		rgba(242, 130, 35, 0.28) 0%,
+		rgba(180, 40, 10, 0.12) 48%,
+		transparent 75%
+	);
+	mix-blend-mode: screen;
+	animation: beam-breathe-left 7s ease-in-out infinite;
+}
+
+/*
+ * Máscara de profundidad para las ondas de fondo:
+ * Recorta suavemente la silueta central de Mar Morán (cabeza, brazos y vestido)
+ * para que los efectos pasen por detrás de ella.
+ */
+.background-sky-mask {
+	-webkit-mask-image:
+		radial-gradient(ellipse 30% 42% at 50% 52%, transparent 55%, black 85%),
+		linear-gradient(to bottom, black 0%, black 38%, rgba(0, 0, 0, 0.35) 55%, transparent 72%);
+	-webkit-mask-composite: source-in;
+	mask-image:
+		radial-gradient(ellipse 30% 42% at 50% 52%, transparent 55%, black 85%),
+		linear-gradient(to bottom, black 0%, black 38%, rgba(0, 0, 0, 0.35) 55%, transparent 72%);
+	mask-composite: intersect;
+}
+
+/* Animación de Títulos de Canciones como Estelas Fugaces */
+@keyframes song-shooting-star {
+	0% {
+		opacity: 0;
+		filter: blur(6px);
+		transform: translate3d(var(--tx-start, -28px), var(--ty-start, 6px), 0) scale(0.96);
+	}
+	18% {
+		opacity: 0.92;
+		filter: blur(0px);
+	}
+	75% {
+		opacity: 0.85;
+		filter: blur(0px);
+	}
+	100% {
+		opacity: 0;
+		filter: blur(5px);
+		transform: translate3d(var(--tx-end, 28px), var(--ty-end, -6px), 0) scale(1.02);
+	}
+}
+
+@keyframes song-streak-line {
+	0% {
+		transform: scaleX(0);
+		transform-origin: left center;
+		opacity: 0;
+	}
+	25% {
+		transform: scaleX(1);
+		transform-origin: left center;
+		opacity: 1;
+	}
+	65% {
+		transform: scaleX(1);
+		transform-origin: right center;
+		opacity: 0.6;
+	}
+	100% {
+		transform: scaleX(0);
+		transform-origin: right center;
+		opacity: 0;
+	}
+}
+
+.song-whisper {
+	animation: song-shooting-star 3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+	text-shadow:
+		0 0 8px rgba(247, 230, 202, 0.45),
+		0 0 18px rgba(242, 159, 56, 0.4),
+		0 2px 10px rgba(22, 4, 2, 0.95);
+}
+
+.song-whisper-streak {
+	height: 1px;
+	background: linear-gradient(90deg, transparent, rgba(242, 159, 56, 0.85), #FFFDF9, transparent);
+	box-shadow: 0 0 10px rgba(242, 159, 56, 0.75);
+	animation: song-streak-line 3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Neon Border & CTA Shimmer */
+@keyframes cta-shimmer {
+	0% {
+		transform: translateX(-120%) skewX(-18deg);
+	}
+	45%, 100% {
+		transform: translateX(220%) skewX(-18deg);
+	}
+}
+
+.neon-pill {
+	box-shadow:
+		0 0 18px rgba(242, 159, 56, 0.22),
+		inset 0 0 10px rgba(242, 159, 56, 0.12);
+}
+
+.neon-input:focus {
+	box-shadow:
+		0 0 22px rgba(242, 159, 56, 0.38),
+		inset 0 0 8px rgba(242, 159, 56, 0.15);
+}
+
+.neon-cta {
+	position: relative;
+	overflow: hidden;
+	box-shadow:
+		0 0 22px rgba(242, 159, 56, 0.55),
+		0 0 45px rgba(242, 110, 20, 0.28);
+}
+
+.neon-cta::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	width: 45%;
+	background: linear-gradient(
+		90deg,
+		transparent,
+		rgba(255, 253, 249, 0.55),
+		transparent
+	);
+	animation: cta-shimmer 4.2s ease-in-out infinite;
+	pointer-events: none;
+}
+
+/* Subtle cinematic entrance animations */
+@keyframes fade-up {
+	from {
+		opacity: 0;
+		transform: translateY(14px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.animate-fade-up-1 {
+	animation: fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+.animate-fade-up-2 {
+	animation: fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+}
+
+.animate-fade-up-3 {
+	animation: fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+}
+
+.animate-fade-up-4 {
+	animation: fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both;
+}
+
+.animate-reveal {
+	animation: fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}

@@ -1,0 +1,1120 @@
+---
+import Layout from "../layouts/Layout.astro";
+import LogoLaSalerosa from "../components/LogoLaSalerosa.astro";
+import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
+---
+
+<Layout>
+	<div
+		class="relative flex flex-col justify-between w-full h-dvh overflow-hidden bg-[#160402]"
+	>
+		<!-- CAPA 0: Imagen de Fondo Responsiva (9:16 dedicada en móvil + 16:9 centrada en desktop) + Vídeo -->
+		<div class="fixed inset-0 z-0 bg-[#160402] overflow-hidden">
+			<picture class="block w-full h-full">
+				<source
+					media="(max-width: 639px)"
+					srcset="/portada-la-salerosa-mobile.jpg"
+				/>
+				<img
+					src="/portada-la-salerosa-desktop.jpg"
+					alt=""
+					class="w-full h-full object-cover object-center select-none pointer-events-none"
+				/>
+			</picture>
+
+			<!-- Vídeo ambiente (se muestra automáticamente cuando el archivo de vídeo está disponible) -->
+			<video
+				id="ambient-video"
+				src="/video-estudio.mp4"
+				autoplay
+				loop
+				muted
+				playsinline
+				class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-700"
+			></video>
+
+			<!-- Audio del adelanto oficial ("La Salerosa") -->
+			<audio
+				id="preview-audio"
+				src="/audio/02-La%20salerosa'web.mp3"
+				loop
+				preload="auto"></audio>
+		</div>
+
+		<!-- Overlays de lectura, Ondas Armónicas Interactivas y Constelación de Canciones (Capa z-10, pointer-events-none) -->
+		<div
+			class="fixed inset-0 z-10 pointer-events-none overflow-hidden"
+			aria-hidden="true"
+		>
+			<!-- Tinte cálido general muy sutil -->
+			<div class="absolute inset-0 bg-[#160402]/20 mix-blend-multiply">
+			</div>
+			<div
+				class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_40%,#160402_100%)] opacity-45"
+			>
+			</div>
+
+			<!-- Haces de luz viva (fuego/ámbar) en modo screen sobre los destellos de la portada -->
+			<div class="absolute inset-0 stage-beam-right"></div>
+			<div class="absolute inset-0 stage-beam-left"></div>
+
+			<!-- Canvas de Ondas Armónicas de Luz e Interacción en el Fondo (enmascarado detrás de Mar) -->
+			<canvas
+				id="harmonic-waves"
+				class="absolute inset-0 w-full h-full mix-blend-screen opacity-75 background-sky-mask"
+			></canvas>
+
+			<!-- Capa de Títulos del Repertorio (16 canciones que aparecen poco a poco como estelas fugaces) -->
+			<div
+				id="song-constellation"
+				class="absolute inset-0 w-full h-full overflow-hidden"
+			>
+			</div>
+
+			<!-- Degradado superior suave para realzar el brillo neón de LA SALEROSA y MAR MORÁN -->
+			<div
+				class="absolute inset-x-0 top-0 bg-gradient-to-b from-[#160402]/80 via-[#160402]/30 to-transparent h-40 sm:h-48"
+			>
+			</div>
+
+			<!-- Degradado inferior (tipo escenario) -->
+			<div
+				class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#160402] via-[#160402]/85 to-transparent h-[42dvh] sm:h-[38dvh]"
+			>
+			</div>
+		</div>
+
+		<!-- CAPA 1: Bloque Superior — Título "LA SALEROSA" de brazo a brazo, "MAR MORÁN" y créditos encima de la cabeza -->
+		<header
+			class="relative z-20 w-full px-4 pt-2.5 sm:px-8 sm:pt-5 md:pt-6 flex flex-col items-center"
+		>
+			<!-- Control de sonido editorial sin caja: discreto arriba en móvil y en la esquina inferior derecha en desktop (simétrico al sello World Premiere) -->
+			<div
+				class="w-full flex justify-center sm:w-auto sm:fixed sm:bottom-8 sm:right-8 md:bottom-10 md:right-12 sm:z-30 mb-1 sm:mb-0 animate-fade-up-1"
+			>
+				<button
+					id="sound-toggle"
+					type="button"
+					data-sound-active="false"
+					aria-pressed="false"
+					aria-label="Activar sonido del adelanto"
+					class="group py-1.5 px-2 flex items-center gap-2.5 text-[#F7E6CA]/85 hover:text-[#FFFDF9] transition-all cursor-pointer"
+				>
+					<!-- Onda armónica centrada en el eje del texto (5 barritas simétricas) -->
+					<span
+						class="flex items-center gap-[2.5px] h-3"
+						aria-hidden="true"
+					>
+						<span
+							class="sound-bar w-[1.5px] h-full rounded-full bg-[#F29F38]/80 group-hover:bg-[#F29F38]"
+						></span>
+						<span
+							class="sound-bar w-[1.5px] h-full rounded-full bg-[#F29F38]/90 group-hover:bg-[#F29F38]"
+						></span>
+						<span
+							class="sound-bar w-[1.5px] h-full rounded-full bg-[#F29F38] group-hover:bg-[#FFFDF9]"
+						></span>
+						<span
+							class="sound-bar w-[1.5px] h-full rounded-full bg-[#F29F38]/90 group-hover:bg-[#F29F38]"
+						></span>
+						<span
+							class="sound-bar w-[1.5px] h-full rounded-full bg-[#F29F38]/80 group-hover:bg-[#F29F38]"
+						></span>
+					</span>
+					<span
+						id="sound-toggle-label"
+						class="neon-subtitle font-['Montserrat'] font-light text-[9.5px] sm:text-[10.5px] tracking-[0.26em] uppercase leading-none"
+						>Activar sonido</span
+					>
+					<span
+						class="hidden sm:block w-6 h-px bg-gradient-to-r from-[#F29F38]/60 to-transparent transition-all duration-300 group-hover:w-9 group-hover:from-[#F29F38]"
+						aria-hidden="true"></span>
+				</button>
+			</div>
+
+			<!-- 1. Bloque del Título ("LA SALEROSA" con halo de neón cálido e incandescencia en movimiento) -->
+			<h1
+				class="w-full flex justify-center select-none animate-fade-up-1"
+			>
+				<span class="sr-only">La Salerosa</span>
+				<LogoLaSalerosa
+					class="w-[86vw] sm:w-[50vw] max-w-none h-auto"
+				/>
+			</h1>
+
+			<!-- 2. Subtítulo de Artista ("MAR MORÁN") en #F7E6CA con resplandor cálido -->
+			<p
+				class="neon-subtitle font-['Montserrat'] font-light text-[clamp(0.82rem,1.45vw,1.35rem)] uppercase tracking-[0.65em] text-[#F7E6CA] mt-0.5 sm:mt-1 pl-[0.65em] text-center animate-fade-up-2"
+			>
+				MAR MORÁN
+			</p>
+
+			<!-- 3. Créditos de Obra y Piano debajo de Mar Morán y encima de su cabeza -->
+			<div
+				class="font-['Montserrat'] uppercase flex flex-col items-center gap-0.5 mt-1 sm:mt-1.5 text-center animate-fade-up-2"
+			>
+				<p
+					class="neon-subtitle font-medium tracking-[0.18em] sm:tracking-[0.25em] text-[8.5px] sm:text-[11px] md:text-xs text-[#F7E6CA] pl-[0.18em] sm:pl-[0.25em]"
+				>
+					CANCIONES LÍRICAS DE CRISTÓBAL OUDRID
+				</p>
+				<p
+					class="neon-subtitle font-medium tracking-[0.22em] sm:tracking-[0.28em] text-[8.5px] sm:text-[11px] md:text-xs text-[#F7E6CA] pl-[0.22em] sm:pl-[0.28em]"
+				>
+					AURELIO VIRIBAY · PIANO
+				</p>
+			</div>
+		</header>
+
+		<!-- Sello Oficial del Disco en Desktop: sobre los pliegues inferiores izquierdos del vestido (como en la portada física) -->
+		<div
+			class="hidden sm:block fixed bottom-8 left-8 md:bottom-10 md:left-12 z-20 pointer-events-none animate-fade-up-3"
+		>
+			<LogoWorldPremiere
+				class="w-28 md:w-32 lg:w-36 h-auto opacity-95"
+			/>
+		</div>
+
+		<!-- CAPA 2: Contenedor Principal Inferior Minimalista y Escultórico (z-20) -->
+		<main
+			class="relative z-20 mt-auto w-full max-w-xl mx-auto px-5 pb-6 sm:pb-8 md:pb-10 text-center flex flex-col items-center"
+		>
+			<!-- 1. Bloque de Cuenta Atrás del Primer Single -->
+			<div
+				class="flex flex-col items-center mb-4 sm:mb-5 animate-fade-up-3"
+			>
+				<!-- Etiqueta editorial integrada con filetes de luz que explica qué mide la cuenta atrás -->
+				<div
+					class="flex items-center justify-center gap-2 sm:gap-3.5 mb-2 w-full"
+				>
+					<span
+						class="w-5 sm:w-12 h-px shrink-0 bg-gradient-to-r from-transparent to-[#F29F38]/70"
+						aria-hidden="true"></span>
+					<span
+						class="font-['Montserrat'] font-medium text-[8.5px] sm:text-[10px] tracking-[0.15em] sm:tracking-[0.28em] uppercase text-[#F29F38] drop-shadow-[0_0_8px_rgba(242,159,56,0.65)] pl-[0.15em] sm:pl-[0.28em] whitespace-nowrap"
+					>
+						Estreno primer single 12 de Nov
+					</span>
+					<span
+						class="w-5 sm:w-12 h-px shrink-0 bg-gradient-to-l from-transparent to-[#F29F38]/70"
+						aria-hidden="true"></span>
+				</div>
+
+				<div
+					aria-label="Cuenta atrás para el estreno del primer single"
+					class="flex items-center justify-center gap-3 sm:gap-5"
+				>
+					<div
+						class="flex flex-col items-center min-w-[44px] sm:min-w-[56px]"
+					>
+						<span
+							id="cd-days"
+							class="neon-subtitle font-['Cinzel'] text-2xl sm:text-3xl md:text-4xl text-[#FFFDF9] tracking-[0.06em] leading-none tabular-nums"
+							>03</span
+						>
+						<span
+							class="font-['Montserrat'] text-[8px] sm:text-[9px] tracking-[0.28em] uppercase text-[#D4A383] mt-1 pl-[0.28em]"
+							>Días</span
+						>
+					</div>
+
+					<span
+						class="font-['Cinzel'] text-lg sm:text-2xl text-[#F29F38]/70 -mt-3 select-none"
+						>:</span
+					>
+
+					<div
+						class="flex flex-col items-center min-w-[44px] sm:min-w-[56px]"
+					>
+						<span
+							id="cd-hours"
+							class="neon-subtitle font-['Cinzel'] text-2xl sm:text-3xl md:text-4xl text-[#FFFDF9] tracking-[0.06em] leading-none tabular-nums"
+							>00</span
+						>
+						<span
+							class="font-['Montserrat'] text-[8px] sm:text-[9px] tracking-[0.28em] uppercase text-[#D4A383] mt-1 pl-[0.28em]"
+							>Horas</span
+						>
+					</div>
+
+					<span
+						class="font-['Cinzel'] text-lg sm:text-2xl text-[#F29F38]/70 -mt-3 select-none"
+						>:</span
+					>
+
+					<div
+						class="flex flex-col items-center min-w-[44px] sm:min-w-[56px]"
+					>
+						<span
+							id="cd-mins"
+							class="neon-subtitle font-['Cinzel'] text-2xl sm:text-3xl md:text-4xl text-[#FFFDF9] tracking-[0.06em] leading-none tabular-nums"
+							>00</span
+						>
+						<span
+							class="font-['Montserrat'] text-[8px] sm:text-[9px] tracking-[0.28em] uppercase text-[#D4A383] mt-1 pl-[0.28em]"
+							>Min</span
+						>
+					</div>
+
+					<span
+						class="font-['Cinzel'] text-lg sm:text-2xl text-[#F29F38]/70 -mt-3 select-none"
+						>:</span
+					>
+
+					<div
+						class="flex flex-col items-center min-w-[44px] sm:min-w-[56px]"
+					>
+						<span
+							id="cd-secs"
+							class="neon-subtitle font-['Cinzel'] text-2xl sm:text-3xl md:text-4xl text-[#F29F38] tracking-[0.06em] leading-none tabular-nums"
+							>00</span
+						>
+						<span
+							class="font-['Montserrat'] text-[8px] sm:text-[9px] tracking-[0.28em] uppercase text-[#D4A383] mt-1 pl-[0.28em]"
+							>Seg</span
+						>
+					</div>
+				</div>
+			</div>
+
+			<!-- 3. Bloque Minimalista de Aviso de Lanzamiento -->
+			<div class="w-full max-w-md mx-auto animate-fade-up-4">
+				<!-- ESTADO 1: Cápsula integrada minimalista (#state-form) -->
+				<div id="state-form">
+					<form
+						id="vip-form"
+						data-endpoint={import.meta.env.PUBLIC_WEBHOOK_URL ||
+							"https://script.google.com/macros/s/AKfycbw6hLROxqC1mIc2-BG8mfqdWTtqAriYIzTm59JnGsA4Tm3EuH7MWXz1kkj1ZPqlbPgb/exec"}
+						class="w-full flex flex-col items-center"
+					>
+						<div
+							class="relative neon-pill flex items-center p-1 sm:p-1.5 rounded-full bg-[#160402]/75 backdrop-blur-md border border-[#F7E6CA]/25 focus-within:border-[#F29F38] transition-all w-full"
+						>
+							<!-- Campo Honeypot anti-bots (invisible para humanos) -->
+							<input
+								type="text"
+								name="website"
+								tabindex="-1"
+								autocomplete="off"
+								aria-hidden="true"
+								class="absolute opacity-0 pointer-events-none w-0 h-0 -z-10"
+							/>
+							<input
+								type="email"
+								required
+								placeholder="Tu correo electrónico"
+								aria-label="Tu correo electrónico"
+								class="flex-1 min-w-0 bg-transparent px-3 sm:px-4 py-2 text-[11px] sm:text-sm text-[#FFFDF9] placeholder-[#F7E6CA]/45 font-['Montserrat'] focus:outline-none select-text"
+							/>
+							<button
+								type="submit"
+								class="neon-cta rounded-full px-3.5 sm:px-6 py-2.5 bg-gradient-to-r from-[#F29F38] via-[#ffae42] to-[#e08922] hover:from-[#ffc066] hover:to-[#F29F38] text-[#160402] font-['Montserrat'] font-semibold text-[9.5px] sm:text-[11px] tracking-[0.11em] sm:tracking-[0.16em] uppercase whitespace-nowrap transition-all cursor-pointer"
+							>
+								Unirme al estreno
+							</button>
+						</div>
+
+						<p
+							class="font-['Montserrat'] font-light text-[10px] sm:text-xs text-[#F7E6CA]/75 tracking-wide mt-2 leading-relaxed text-balance"
+						>
+							Recibe el aviso de salida el <span
+								class="whitespace-nowrap">12 de noviembre</span
+							> y descubre los secretos de esta <strong
+								class="font-medium text-[#F7E6CA]/95"
+								>primera grabación mundial</strong
+							>.
+						</p>
+
+						<!-- Consentimiento RGPD minimalista con checkbox joya/editorial a medida -->
+						<div
+							class="mt-2 flex items-center justify-center gap-2 text-[9px] sm:text-[10px] font-['Montserrat'] font-light text-[#F7E6CA]/65 tracking-wider"
+						>
+							<label
+								for="rgpd-consent"
+								class="group inline-flex items-center gap-2 cursor-pointer select-none"
+							>
+								<span class="relative flex items-center justify-center w-3.5 h-3.5">
+									<input
+										id="rgpd-consent"
+										name="consent"
+										type="checkbox"
+										required
+										class="peer appearance-none w-3.5 h-3.5 rounded-[4px] bg-[#160402]/80 backdrop-blur-sm border border-[#F7E6CA]/35 group-hover:border-[#F29F38]/75 checked:border-[#F29F38] checked:bg-[#F29F38]/20 checked:shadow-[0_0_10px_rgba(242,159,56,0.55)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#F29F38] transition-all duration-200 cursor-pointer"
+									/>
+									<svg
+										viewBox="0 0 12 12"
+										fill="none"
+										aria-hidden="true"
+										class="pointer-events-none absolute w-2.5 h-2.5 text-[#F29F38] drop-shadow-[0_0_4px_rgba(242,159,56,0.8)] scale-0 peer-checked:scale-100 transition-transform duration-200 ease-out"
+									>
+										<path
+											d="M2.2 6.2L4.8 8.8L9.8 3.2"
+											stroke="currentColor"
+											stroke-width="1.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"></path>
+									</svg>
+								</span>
+								<span class="group-hover:text-[#F7E6CA]/90 transition-colors">
+									Acepto recibir el aviso del estreno y la
+								</span>
+							</label>
+							<button
+								type="button"
+								id="open-privacy-modal"
+								class="underline decoration-[#F29F38]/55 hover:decoration-[#F29F38] underline-offset-2 text-[#F7E6CA]/85 hover:text-[#FFFDF9] transition-colors cursor-pointer"
+							>
+								Política de Privacidad
+							</button>
+						</div>
+					</form>
+				</div>
+
+				<!-- ESTADO 2: Confirmación editorial sutil in-place (#state-success) -->
+				<div
+					id="state-success"
+					class="hidden py-2 flex flex-col items-center gap-1.5 text-center animate-reveal"
+				>
+					<div class="flex items-center justify-center gap-2.5">
+						<span
+							class="w-6 h-px bg-gradient-to-r from-transparent to-[#F29F38]/70"
+							aria-hidden="true"></span>
+						<p
+							class="neon-subtitle font-['Montserrat'] font-light text-[10px] sm:text-[11px] text-[#FFFDF9] tracking-[0.24em] uppercase whitespace-nowrap"
+						>
+							✦ Invitación activada para el estreno
+						</p>
+						<span
+							class="w-6 h-px bg-gradient-to-l from-transparent to-[#F29F38]/70"
+							aria-hidden="true"></span>
+					</div>
+					<button
+						type="button"
+						id="reopen-welcome-modal"
+						class="font-['Montserrat'] font-light text-[9.5px] sm:text-[10.5px] text-[#F29F38]/90 hover:text-[#FFFDF9] tracking-[0.18em] uppercase underline decoration-[#F29F38]/50 underline-offset-4 transition-colors cursor-pointer"
+					>
+						Leer carta de Mar Morán
+					</button>
+				</div>
+			</div>
+		</main>
+
+		<!-- Modal de Carta Personal de Bienvenida firmada por Mar Morán -->
+		<div
+			id="welcome-modal"
+			role="dialog"
+			aria-modal="true"
+			aria-labelledby="welcome-modal-title"
+			class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#160402]/85 backdrop-blur-md"
+		>
+			<div
+				class="relative w-full max-w-lg rounded-2xl bg-gradient-to-b from-[#210704]/95 to-[#160402]/98 border border-[#F29F38]/40 px-6 py-7 sm:px-9 sm:py-8 text-center shadow-2xl neon-pill animate-reveal select-text"
+			>
+				<button
+					type="button"
+					id="close-welcome-modal"
+					aria-label="Cerrar carta de bienvenida"
+					class="absolute top-4 right-4 text-[#F7E6CA]/60 hover:text-[#FFFDF9] text-xs uppercase tracking-widest px-2 py-1 transition-colors cursor-pointer"
+				>
+					✕
+				</button>
+
+				<!-- Filete superior -->
+				<div class="flex items-center justify-center gap-3 mb-3">
+					<span
+						class="w-8 h-px bg-gradient-to-r from-transparent to-[#F29F38]/70"
+						aria-hidden="true"></span>
+					<span
+						class="font-['Montserrat'] font-medium text-[9px] tracking-[0.28em] uppercase text-[#F29F38] pl-[0.28em]"
+					>
+						Invitación confirmada · 12 Nov
+					</span>
+					<span
+						class="w-8 h-px bg-gradient-to-l from-transparent to-[#F29F38]/70"
+						aria-hidden="true"></span>
+				</div>
+
+				<h2
+					id="welcome-modal-title"
+					class="neon-subtitle font-['Cinzel'] text-lg sm:text-xl text-[#FFFDF9] tracking-[0.12em] uppercase mb-4"
+				>
+					Gracias por estar al otro lado
+				</h2>
+
+				<div
+					class="font-['Montserrat'] font-light text-xs sm:text-[13px] text-[#F7E6CA]/90 space-y-3 leading-relaxed text-balance"
+				>
+					<p>
+						Qué ilusión saber que me acompañarás cuando <strong
+							class="font-medium text-[#FFFDF9]"
+							>«La Salerosa»</strong
+						> vea por fin la luz.
+					</p>
+					<p>
+						Dar vida junto al maestro <strong
+							class="font-medium text-[#FFFDF9]"
+							>Aurelio Viribay</strong
+						> a estas <em>Canciones Líricas de Cristóbal Oudrid</em> —en
+						su <strong class="font-medium text-[#FFFDF9]"
+							>primera grabación mundial</strong
+						>— ha sido un viaje de emoción, raíz y belleza que
+						deseaba compartir contigo en primicia.
+					</p>
+					<p>
+						El próximo <strong class="font-medium text-[#FFFDF9]"
+							>12 de noviembre</strong
+						> recibirás en tu correo el acceso directo al estreno del
+						primer single y las historias íntimas que esconde esta grabación.
+					</p>
+				</div>
+
+				<!-- Firma caligráfica de Mar Morán -->
+				<div class="mt-5 pt-4 border-t border-[#F7E6CA]/15 flex flex-col items-center">
+					<span
+						class="font-['Montserrat'] font-light text-[10px] tracking-[0.22em] uppercase text-[#D4A383] mb-1 pl-[0.22em]"
+					>
+						Con todo mi cariño,
+					</span>
+					<p
+						class="font-['Pinyon_Script'] text-3xl sm:text-4xl text-[#F29F38] drop-shadow-[0_0_12px_rgba(242,159,56,0.45)] leading-tight select-none"
+					>
+						Mar Morán
+					</p>
+				</div>
+
+				<button
+					type="button"
+					id="welcome-modal-cta"
+					class="mt-5 neon-cta rounded-full px-6 py-2.5 bg-gradient-to-r from-[#F29F38] via-[#ffae42] to-[#e08922] hover:from-[#ffc066] hover:to-[#F29F38] text-[#160402] font-['Montserrat'] font-semibold text-[10px] tracking-[0.18em] uppercase transition-all cursor-pointer"
+				>
+					Volver a la portada
+				</button>
+			</div>
+		</div>
+
+		<!-- Modal de Política de Privacidad (RGPD) integrado sin salir de la página -->
+		<div
+			id="privacy-modal"
+			role="dialog"
+			aria-modal="true"
+			aria-labelledby="privacy-modal-title"
+			class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#160402]/80 backdrop-blur-md"
+		>
+			<div
+				class="relative w-full max-w-md rounded-2xl bg-[#160402]/95 border border-[#F29F38]/35 p-6 text-left shadow-2xl neon-pill select-text"
+			>
+				<div class="flex items-center justify-between mb-3">
+					<h2
+						id="privacy-modal-title"
+						class="font-['Cinzel'] text-sm sm:text-base tracking-[0.15em] uppercase text-[#F29F38]"
+					>
+						Política de Privacidad
+					</h2>
+					<button
+						type="button"
+						id="close-privacy-modal"
+						aria-label="Cerrar política de privacidad"
+						class="text-[#F7E6CA]/65 hover:text-[#FFFDF9] text-xs uppercase tracking-widest px-2 py-1 cursor-pointer"
+					>
+						✕
+					</button>
+				</div>
+
+				<div
+					class="font-['Montserrat'] font-light text-[11px] sm:text-xs text-[#F7E6CA]/85 space-y-2.5 leading-relaxed max-h-[65dvh] overflow-y-auto pr-1"
+				>
+					<p>
+						<strong class="font-medium text-[#FFFDF9]"
+							>Responsable:</strong
+						> Mar Morán (<a
+							href="mailto:info@marmoransoprano.com"
+							class="underline decoration-[#F29F38]/60 underline-offset-2 text-[#FFFDF9] hover:text-[#F29F38]"
+							>info@marmoransoprano.com</a
+						>).
+					</p>
+					<p>
+						<strong class="font-medium text-[#FFFDF9]"
+							>Finalidad:</strong
+						> Gestionar tu suscripción a la lista de espera para enviarte
+						el aviso de lanzamiento del single y álbum <em
+							>«La Salerosa — Canciones Líricas de Cristóbal Oudrid»</em
+						>, así como contenido exclusivo sobre esta primera
+						grabación mundial.
+					</p>
+					<p>
+						<strong class="font-medium text-[#FFFDF9]"
+							>Legitimación:</strong
+						> Consentimiento expreso del interesado (art. 6.1.a RGPD)
+						otorgado al marcar la casilla de aceptación.
+					</p>
+					<p>
+						<strong class="font-medium text-[#FFFDF9]"
+							>Conservación y destinatarios:</strong
+						> Tus datos se conservarán únicamente durante la campaña de
+						lanzamiento o hasta que solicites tu baja. No se cederán a
+						terceros salvo obligación legal (almacenamiento seguro en
+						Google Workspace).
+					</p>
+					<p>
+						<strong class="font-medium text-[#FFFDF9]"
+							>Derechos:</strong
+						> Puedes ejercer tus derechos de acceso, rectificación, supresión,
+						limitación y oposición en cualquier momento escribiendo a
+						<a
+							href="mailto:info@marmoransoprano.com"
+							class="underline decoration-[#F29F38]/60 underline-offset-2 text-[#FFFDF9] hover:text-[#F29F38]"
+							>info@marmoransoprano.com</a
+						>.
+					</p>
+					<p class="text-[10px] text-[#F7E6CA]/55 pt-1 border-t border-[#F7E6CA]/15">
+						Esta página no utiliza cookies publicitarias ni de
+						seguimiento de terceros.
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		const openPrivacyBtn = document.getElementById("open-privacy-modal");
+		const closePrivacyBtn = document.getElementById("close-privacy-modal");
+		const privacyModal = document.getElementById("privacy-modal");
+
+		const welcomeModal = document.getElementById("welcome-modal");
+		const closeWelcomeBtn = document.getElementById("close-welcome-modal");
+		const welcomeCtaBtn = document.getElementById("welcome-modal-cta");
+		const reopenWelcomeBtn = document.getElementById("reopen-welcome-modal");
+
+		if (openPrivacyBtn && closePrivacyBtn && privacyModal) {
+			openPrivacyBtn.addEventListener("click", () => {
+				privacyModal.classList.remove("hidden");
+			});
+			closePrivacyBtn.addEventListener("click", () => {
+				privacyModal.classList.add("hidden");
+			});
+			privacyModal.addEventListener("click", (e) => {
+				if (e.target === privacyModal) {
+					privacyModal.classList.add("hidden");
+				}
+			});
+		}
+
+		if (welcomeModal) {
+			const hideWelcome = () => welcomeModal.classList.add("hidden");
+			closeWelcomeBtn?.addEventListener("click", hideWelcome);
+			welcomeCtaBtn?.addEventListener("click", hideWelcome);
+			reopenWelcomeBtn?.addEventListener("click", () => {
+				welcomeModal.classList.remove("hidden");
+			});
+			welcomeModal.addEventListener("click", (e) => {
+				if (e.target === welcomeModal) hideWelcome();
+			});
+		}
+
+		window.addEventListener("keydown", (e) => {
+			if (e.key === "Escape") {
+				privacyModal?.classList.add("hidden");
+				welcomeModal?.classList.add("hidden");
+			}
+		});
+		const video = document.getElementById(
+			"ambient-video",
+		) as HTMLVideoElement | null;
+		const previewAudio = document.getElementById(
+			"preview-audio",
+		) as HTMLAudioElement | null;
+		const soundToggle = document.getElementById(
+			"sound-toggle",
+		) as HTMLButtonElement | null;
+		const soundLabel = document.getElementById(
+			"sound-toggle-label",
+		) as HTMLSpanElement | null;
+
+		let isAudioPlaying = false;
+
+		if (video) {
+			video.addEventListener("loadeddata", () => {
+				video.classList.remove("opacity-0");
+			});
+		}
+
+		let fadeInterval: number | undefined;
+
+		if (previewAudio && soundToggle && soundLabel) {
+			soundToggle.addEventListener("click", () => {
+				const willBeActive = !isAudioPlaying;
+				isAudioPlaying = willBeActive;
+
+				if (fadeInterval) {
+					window.clearInterval(fadeInterval);
+				}
+
+				if (willBeActive) {
+					previewAudio.volume = 0;
+					previewAudio.play().catch(() => {});
+					let vol = 0;
+					fadeInterval = window.setInterval(() => {
+						vol = Math.min(1, vol + 0.08);
+						previewAudio.volume = vol;
+						if (vol >= 1) {
+							window.clearInterval(fadeInterval);
+						}
+					}, 40);
+				} else {
+					let vol = previewAudio.volume;
+					fadeInterval = window.setInterval(() => {
+						vol = Math.max(0, vol - 0.12);
+						previewAudio.volume = vol;
+						if (vol <= 0) {
+							previewAudio.pause();
+							window.clearInterval(fadeInterval);
+						}
+					}, 35);
+				}
+
+				soundToggle.setAttribute(
+					"data-sound-active",
+					String(willBeActive),
+				);
+				soundToggle.setAttribute("aria-pressed", String(willBeActive));
+				soundToggle.setAttribute(
+					"aria-label",
+					willBeActive
+						? "Silenciar adelanto"
+						: "Activar sonido del adelanto",
+				);
+				soundLabel.textContent = willBeActive
+					? "Silenciar adelanto"
+					: "Activar sonido";
+			});
+		}
+
+		// Cuenta atrás en vivo hasta el lanzamiento del single (12 de noviembre a las 00:00h)
+		const cdDays = document.getElementById("cd-days");
+		const cdHours = document.getElementById("cd-hours");
+		const cdMins = document.getElementById("cd-mins");
+		const cdSecs = document.getElementById("cd-secs");
+
+		const releaseDate = new Date("2026-11-12T20:00:00+01:00").getTime();
+
+		const updateCountdown = () => {
+			const now = Date.now();
+			const diff = Math.max(0, releaseDate - now);
+
+			const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+			const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+			const m = Math.floor((diff / (1000 * 60)) % 60);
+			const s = Math.floor((diff / 1000) % 60);
+
+			if (cdDays) cdDays.textContent = String(d).padStart(2, "0");
+			if (cdHours) cdHours.textContent = String(h).padStart(2, "0");
+			if (cdMins) cdMins.textContent = String(m).padStart(2, "0");
+			if (cdSecs) cdSecs.textContent = String(s).padStart(2, "0");
+		};
+
+		updateCountdown();
+		window.setInterval(updateCountdown, 1000);
+
+		const vipForm = document.getElementById(
+			"vip-form",
+		) as HTMLFormElement | null;
+		const stateForm = document.getElementById(
+			"state-form",
+		) as HTMLDivElement | null;
+		const stateSuccess = document.getElementById(
+			"state-success",
+		) as HTMLDivElement | null;
+		const formLoadedAt = Date.now();
+
+		if (vipForm && stateForm && stateSuccess) {
+			vipForm.addEventListener("submit", async (e) => {
+				e.preventDefault();
+				const input = vipForm.querySelector(
+					'input[type="email"]',
+				) as HTMLInputElement | null;
+				const honeypot = vipForm.querySelector(
+					'input[name="website"]',
+				) as HTMLInputElement | null;
+				const submitBtn = vipForm.querySelector(
+					'button[type="submit"]',
+				) as HTMLButtonElement | null;
+
+				const email = input?.value.trim().toLowerCase() || "";
+				const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+				if (!email || !emailRegex.test(email)) return;
+
+				const elapsedMs = Date.now() - formLoadedAt;
+				const isBot = Boolean(honeypot?.value) || elapsedMs < 1200;
+
+				let alreadyRegistered = false;
+				try {
+					alreadyRegistered =
+						window.localStorage.getItem("salerosa_vip_email") ===
+						email;
+				} catch {
+					// localStorage no disponible
+				}
+
+				// Si es un bot o ya había registrado ese mismo correo, mostramos éxito sin ensuciar el Google Sheet
+				if (isBot || alreadyRegistered) {
+					stateForm.classList.add("hidden");
+					stateSuccess.classList.remove("hidden");
+					welcomeModal?.classList.remove("hidden");
+					return;
+				}
+
+				if (submitBtn) {
+					submitBtn.disabled = true;
+					submitBtn.textContent = "Activando...";
+				}
+
+				const payload = {
+					email,
+					single: "La Salerosa",
+					artist: "Mar Morán",
+					createdAt: new Date().toISOString(),
+					website: honeypot?.value || "",
+					elapsedMs: String(elapsedMs),
+				};
+
+				const directWebhook = vipForm.dataset.endpoint;
+				let sent = false;
+
+				// 1. Intentar vía Serverless Function de Vercel (/api/subscribe) para evitar bloqueos CORS
+				try {
+					const res = await fetch("/api/subscribe", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							Accept: "application/json",
+						},
+						body: JSON.stringify(payload),
+					});
+					if (res.ok) {
+						sent = true;
+					}
+				} catch {
+					// En local (astro dev) pasamos al webhook directo
+				}
+
+				// 2. Fallback directo al Webhook (útil en astro dev local o plataformas estáticas)
+				if (!sent && directWebhook) {
+					try {
+						await fetch(directWebhook, {
+							method: "POST",
+							mode: "no-cors",
+							headers: {
+								"Content-Type":
+									"application/x-www-form-urlencoded;charset=UTF-8",
+							},
+							body: new URLSearchParams(payload).toString(),
+						});
+					} catch {
+						// Fallback silencioso para no bloquear la experiencia visual
+					}
+				}
+
+				try {
+					window.localStorage.setItem("salerosa_vip_email", email);
+				} catch {
+					// Ignorar si está en modo privado restringido
+				}
+
+				stateForm.classList.add("hidden");
+				stateSuccess.classList.remove("hidden");
+				welcomeModal?.classList.remove("hidden");
+			});
+		}
+
+		// 1. Ondas Armónicas Interactivas (hilos de luz/seda iterados en fase que responden al cursor/tacto y al sonido)
+		const canvas = document.getElementById(
+			"harmonic-waves",
+		) as HTMLCanvasElement | null;
+		if (canvas) {
+			const ctx = canvas.getContext("2d");
+			let width = (canvas.width = window.innerWidth);
+			let height = (canvas.height = window.innerHeight);
+
+			const pointer = {
+				x: width * 0.5,
+				y: height * 0.25,
+				targetX: width * 0.5,
+				targetY: height * 0.25,
+				active: false,
+				energy: 0,
+			};
+
+			window.addEventListener("resize", () => {
+				width = canvas.width = window.innerWidth;
+				height = canvas.height = window.innerHeight;
+			});
+
+			window.addEventListener("pointermove", (e) => {
+				pointer.targetX = e.clientX;
+				pointer.targetY = e.clientY;
+				pointer.active = true;
+				pointer.energy = Math.min(1, pointer.energy + 0.18);
+			});
+
+			window.addEventListener(
+				"touchmove",
+				(e) => {
+					if (e.touches.length > 0) {
+						pointer.targetX = e.touches[0].clientX;
+						pointer.targetY = e.touches[0].clientY;
+						pointer.active = true;
+						pointer.energy = Math.min(1, pointer.energy + 0.22);
+					}
+				},
+				{ passive: true },
+			);
+
+			let time = 0;
+			const totalLines = 9;
+
+			const render = () => {
+				if (!ctx) return;
+				ctx.clearRect(0, 0, width, height);
+
+				pointer.x += (pointer.targetX - pointer.x) * 0.06;
+				pointer.y += (pointer.targetY - pointer.y) * 0.06;
+				pointer.energy *= 0.96;
+
+				const audioBoost = isAudioPlaying ? 1.6 : 1.0;
+				time += 0.012 * audioBoost;
+
+				if (pointer.active) {
+					const spotRadius = Math.max(width, height) * 0.28;
+					const spotGrad = ctx.createRadialGradient(
+						pointer.x,
+						pointer.y,
+						0,
+						pointer.x,
+						pointer.y,
+						spotRadius,
+					);
+					spotGrad.addColorStop(
+						0,
+						`rgba(242, 159, 56, ${0.18 + pointer.energy * 0.14})`,
+					);
+					spotGrad.addColorStop(
+						0.45,
+						`rgba(212, 163, 131, ${0.07 + pointer.energy * 0.06})`,
+					);
+					spotGrad.addColorStop(1, "rgba(22, 4, 2, 0)");
+
+					ctx.fillStyle = spotGrad;
+					ctx.beginPath();
+					ctx.arc(pointer.x, pointer.y, spotRadius, 0, Math.PI * 2);
+					ctx.fill();
+				}
+
+				const baseY = height * 0.24;
+				const amplitude =
+					(height * 0.055 + pointer.energy * 18) *
+					(isAudioPlaying ? 1.35 : 1);
+
+				for (let i = 0; i < totalLines; i++) {
+					const ratio = i / (totalLines - 1);
+					const phaseOffset = i * 0.22;
+
+					const lineGrad = ctx.createLinearGradient(0, 0, width, 0);
+					const alpha =
+						(0.12 + Math.sin(ratio * Math.PI) * 0.28) *
+						(isAudioPlaying ? 1.25 : 1);
+					lineGrad.addColorStop(0, "rgba(242, 159, 56, 0)");
+					lineGrad.addColorStop(
+						0.2,
+						`rgba(242, 159, 56, ${alpha * 0.85})`,
+					);
+					lineGrad.addColorStop(0.5, `rgba(247, 230, 202, ${alpha})`);
+					lineGrad.addColorStop(
+						0.8,
+						`rgba(242, 110, 20, ${alpha * 0.9})`,
+					);
+					lineGrad.addColorStop(1, "rgba(242, 159, 56, 0)");
+
+					ctx.save();
+					ctx.strokeStyle = lineGrad;
+					ctx.lineWidth =
+						i === Math.floor(totalLines / 2) ? 1.5 : 0.85;
+					ctx.beginPath();
+
+					const steps = 64;
+					for (let s = 0; s <= steps; s++) {
+						const u = s / steps;
+						const x = u * width;
+
+						const wave1 =
+							Math.sin(u * Math.PI * 2.2 + time - phaseOffset) *
+							amplitude;
+						const wave2 =
+							Math.cos(
+								u * Math.PI * 3.6 -
+									time * 0.7 +
+									phaseOffset * 1.4,
+							) *
+							(amplitude * 0.45);
+
+						const distToPointer = Math.hypot(
+							x - pointer.x,
+							baseY - pointer.y,
+						);
+						const influenceRadius = width * 0.35;
+						const pull =
+							Math.max(0, 1 - distToPointer / influenceRadius) **
+								2 *
+							(pointer.y - baseY) *
+							(0.28 + pointer.energy * 0.25);
+
+						const y =
+							baseY +
+							(i - totalLines / 2) * 7 +
+							wave1 +
+							wave2 +
+							pull;
+
+						if (s === 0) {
+							ctx.moveTo(x, y);
+						} else {
+							ctx.lineTo(x, y);
+						}
+					}
+
+					ctx.stroke();
+					ctx.restore();
+				}
+
+				requestAnimationFrame(render);
+			};
+
+			requestAnimationFrame(render);
+		}
+
+		// 2. Constelación de las 16 Canciones del Disco: aparecen poco a poco con pausas limpias entre ellas
+		const songContainer = document.getElementById(
+			"song-constellation",
+		) as HTMLDivElement | null;
+		if (songContainer) {
+			const songs = [
+				"La Macarena",
+				"La Salerosa",
+				"Soledad",
+				"La hamaca",
+				"La pajarita",
+				"La huevera de Fuencarral",
+				"Malagueña",
+				"Fugaz Ventura",
+				"Tres por ciento",
+				"Ojos negros y ojos azules",
+				"Nueva rondalla Aragonesa",
+				"El torero Rozicler",
+				"El mareíto",
+				"Me acuerdo",
+				"Te acuerdas",
+				"El tres por ciento",
+			];
+
+			const desktopZones = [
+				{ left: "5%", topPct: 33, align: "left", dir: 1 },
+				{ right: "5%", topPct: 34, align: "right", dir: -1 },
+				{ left: "5%", topPct: 46, align: "left", dir: 1 },
+				{ right: "5%", topPct: 47, align: "right", dir: -1 },
+				{ left: "7%", topPct: 57, align: "left", dir: 1 },
+				{ right: "7%", topPct: 56, align: "right", dir: -1 },
+			];
+
+			const mobileZones = [
+				{ left: "4%", topPct: 42, align: "left", dir: 1 },
+				{ right: "4%", topPct: 43, align: "right", dir: -1 },
+				{ left: "4%", topPct: 53, align: "left", dir: 1 },
+				{ right: "4%", topPct: 54, align: "right", dir: -1 },
+			];
+
+			const headerEl = document.querySelector("header");
+			const mainEl = document.querySelector("main");
+
+			let queue: string[] = [];
+			let lastSong = "";
+			let currentZoneIdx = 0;
+
+			const refillQueue = () => {
+				queue = [...songs];
+				for (let i = queue.length - 1; i > 0; i--) {
+					const j = Math.floor(Math.random() * (i + 1));
+					[queue[i], queue[j]] = [queue[j], queue[i]];
+				}
+				if (queue[0] === lastSong && queue.length > 1) {
+					[queue[0], queue[queue.length - 1]] = [
+						queue[queue.length - 1],
+						queue[0],
+					];
+				}
+			};
+
+			const ANIM_DURATION_MS = 3000;
+
+			const scheduleNextWhisper = () => {
+				const emptyPauseMs = 700 + Math.floor(Math.random() * 400);
+				window.setTimeout(spawnSongWhisper, emptyPauseMs);
+			};
+
+			const spawnSongWhisper = () => {
+				if (queue.length === 0) refillQueue();
+				const vh = window.innerHeight || 800;
+				const isMobile = window.innerWidth < 640;
+				const zones = isMobile ? mobileZones : desktopZones;
+				const zone = zones[currentZoneIdx % zones.length];
+				const songTitle = queue.shift()!;
+				lastSong = songTitle;
+
+				currentZoneIdx++;
+
+				// Calculamos la posición vertical garantizando que nunca pise el <header> ni el <main>
+				let topPx = (zone.topPct / 100) * vh;
+				if (headerEl) {
+					const minTopPx =
+						headerEl.getBoundingClientRect().bottom + 18;
+					if (topPx < minTopPx) topPx = minTopPx;
+				}
+				if (mainEl) {
+					const maxTopPx = mainEl.getBoundingClientRect().top - 38;
+					if (topPx > maxTopPx) topPx = maxTopPx;
+				}
+
+				const el = document.createElement("div");
+				el.className =
+					"song-whisper absolute flex flex-col gap-0.5 sm:gap-1 pointer-events-none select-none";
+
+				if (zone.left) el.style.left = zone.left;
+				if (zone.right) el.style.right = zone.right;
+				el.style.top = `${Math.round(topPx)}px`;
+				el.style.textAlign = zone.align;
+				el.style.alignItems =
+					zone.align === "right" ? "flex-end" : "flex-start";
+
+				const travelX = isMobile ? 14 : 26;
+				el.style.setProperty("--tx-start", `${-travelX * zone.dir}px`);
+				el.style.setProperty("--ty-start", "4px");
+				el.style.setProperty("--tx-end", `${travelX * zone.dir}px`);
+				el.style.setProperty("--ty-end", "-4px");
+
+				el.innerHTML = `
+				<p class="font-['Cinzel'] text-[clamp(0.56rem,2.2vw,0.7rem)] sm:text-[clamp(0.75rem,1.05vw,0.95rem)] tracking-[0.08em] sm:tracking-[0.14em] text-[#F7E6CA]/85 leading-snug max-w-[36vw] sm:max-w-none">
+					${songTitle}
+				</p>
+				<div class="song-whisper-streak w-[15vw] max-w-[72px] sm:w-28 sm:max-w-none"></div>
+			`;
+
+				songContainer.appendChild(el);
+
+				window.setTimeout(() => {
+					el.remove();
+					scheduleNextWhisper();
+				}, ANIM_DURATION_MS);
+			};
+
+			window.setTimeout(spawnSongWhisper, 900);
+		}
+	</script>
+</Layout>
