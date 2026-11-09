@@ -1,0 +1,13 @@
+{
+	"rewrites": [
+		{
+			"source": "/lasalerosa",
+			"destination": "/"
+		},
+		{
+			"source": "/lasalerosa/:path*",
+			"destination": "/:path*"
+		}
+	]
+}
+

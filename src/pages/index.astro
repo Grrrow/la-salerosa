@@ -2,43 +2,34 @@
 import Layout from "../layouts/Layout.astro";
 import LogoLaSalerosa from "../components/LogoLaSalerosa.astro";
 import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
 <Layout>
 	<div
 		class="relative flex flex-col justify-between w-full h-dvh overflow-hidden bg-[#160402]"
 	>
-		<!-- CAPA 0: Imagen de Fondo Responsiva (9:16 dedicada en móvil + 16:9 centrada en desktop) + Vídeo -->
+		<!-- CAPA 0: Imagen de Fondo Responsiva (9:16 dedicada en móvil + 16:9 centrada en desktop) -->
 		<div class="fixed inset-0 z-0 bg-[#160402] overflow-hidden">
 			<picture class="block w-full h-full">
 				<source
 					media="(max-width: 639px)"
-					srcset="/portada-la-salerosa-mobile.jpg"
+					srcset={`${base}/portada-la-salerosa-mobile.jpg`}
 				/>
 				<img
-					src="/portada-la-salerosa-desktop.jpg"
-					alt=""
+					src={`${base}/portada-la-salerosa-desktop.jpg`}
+					alt="Mar Morán en la portada de La Salerosa — Canciones Líricas de Cristóbal Oudrid junto al pianista Aurelio Viribay"
 					class="w-full h-full object-cover object-center select-none pointer-events-none"
 				/>
 			</picture>
 
-			<!-- Vídeo ambiente (se muestra automáticamente cuando el archivo de vídeo está disponible) -->
-			<video
-				id="ambient-video"
-				src="/video-estudio.mp4"
-				autoplay
-				loop
-				muted
-				playsinline
-				class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-700"
-			></video>
-
-			<!-- Audio del adelanto oficial ("La Salerosa") -->
+			<!-- Audio del adelanto oficial ("La Salerosa"): se carga bajo demanda solo al hacer clic -->
 			<audio
 				id="preview-audio"
-				src="/audio/02-La%20salerosa'web.mp3"
+				data-src={`${base}/audio/02-La%20salerosa'web.mp3`}
 				loop
-				preload="auto"></audio>
+				preload="none"></audio>
 		</div>
 
 		<!-- Overlays de lectura, Ondas Armónicas Interactivas y Constelación de Canciones (Capa z-10, pointer-events-none) -->
@@ -88,55 +79,91 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 		<header
 			class="relative z-20 w-full px-4 pt-2.5 sm:px-8 sm:pt-5 md:pt-6 flex flex-col items-center"
 		>
-			<!-- Control de sonido editorial sin caja: discreto arriba en móvil y en la esquina inferior derecha en desktop (simétrico al sello World Premiere) -->
+			<!-- Barra de controles editoriales sin caja: en móvil arriba centrados (Sonido + ES/EN); en desktop Sonido abajo-derecha y Selector ES/EN arriba-derecha -->
 			<div
-				class="w-full flex justify-center sm:w-auto sm:fixed sm:bottom-8 sm:right-8 md:bottom-10 md:right-12 sm:z-30 mb-1 sm:mb-0 animate-fade-up-1"
+				class="relative z-30 w-full flex items-center justify-center gap-4 sm:gap-0 mb-1 sm:mb-0"
 			>
-				<button
-					id="sound-toggle"
-					type="button"
-					data-sound-active="false"
-					aria-pressed="false"
-					aria-label="Activar sonido del adelanto"
-					class="group py-1.5 px-2 flex items-center gap-2.5 text-[#F7E6CA]/85 hover:text-[#FFFDF9] transition-all cursor-pointer"
+				<div
+					class="sm:fixed sm:bottom-8 sm:right-8 md:bottom-10 md:right-12 sm:z-30 animate-fade-up-1"
 				>
-					<!-- Onda armónica centrada en el eje del texto (5 barritas simétricas) -->
-					<span
-						class="flex items-center gap-[2.5px] h-3"
-						aria-hidden="true"
+					<button
+						id="sound-toggle"
+						type="button"
+						data-sound-active="false"
+						aria-pressed="false"
+						aria-label="Activar sonido del adelanto"
+						class="group py-1.5 px-2 flex items-center gap-2.5 text-[#F7E6CA]/85 hover:text-[#FFFDF9] transition-all cursor-pointer"
 					>
+						<!-- Onda armónica centrada en el eje del texto (5 barritas simétricas) -->
 						<span
-							class="sound-bar w-[1.5px] h-full rounded-full bg-[#F29F38]/80 group-hover:bg-[#F29F38]"
-						></span>
+							class="flex items-center gap-[2.5px] h-3"
+							aria-hidden="true"
+						>
+							<span
+								class="sound-bar w-[1.5px] h-full rounded-full bg-[#F29F38]/80 group-hover:bg-[#F29F38]"
+							></span>
+							<span
+								class="sound-bar w-[1.5px] h-full rounded-full bg-[#F29F38]/90 group-hover:bg-[#F29F38]"
+							></span>
+							<span
+								class="sound-bar w-[1.5px] h-full rounded-full bg-[#F29F38] group-hover:bg-[#FFFDF9]"
+							></span>
+							<span
+								class="sound-bar w-[1.5px] h-full rounded-full bg-[#F29F38]/90 group-hover:bg-[#F29F38]"
+							></span>
+							<span
+								class="sound-bar w-[1.5px] h-full rounded-full bg-[#F29F38]/80 group-hover:bg-[#F29F38]"
+							></span>
+						</span>
 						<span
-							class="sound-bar w-[1.5px] h-full rounded-full bg-[#F29F38]/90 group-hover:bg-[#F29F38]"
-						></span>
+							id="sound-toggle-label"
+							class="neon-subtitle font-['Montserrat'] font-light text-[9.5px] sm:text-[10.5px] tracking-[0.26em] uppercase leading-none"
+							>Activar sonido</span
+						>
 						<span
-							class="sound-bar w-[1.5px] h-full rounded-full bg-[#F29F38] group-hover:bg-[#FFFDF9]"
-						></span>
-						<span
-							class="sound-bar w-[1.5px] h-full rounded-full bg-[#F29F38]/90 group-hover:bg-[#F29F38]"
-						></span>
-						<span
-							class="sound-bar w-[1.5px] h-full rounded-full bg-[#F29F38]/80 group-hover:bg-[#F29F38]"
-						></span>
-					</span>
-					<span
-						id="sound-toggle-label"
-						class="neon-subtitle font-['Montserrat'] font-light text-[9.5px] sm:text-[10.5px] tracking-[0.26em] uppercase leading-none"
-						>Activar sonido</span
+							class="hidden sm:block w-6 h-px bg-gradient-to-r from-[#F29F38]/60 to-transparent transition-all duration-300 group-hover:w-9 group-hover:from-[#F29F38]"
+							aria-hidden="true"></span>
+					</button>
+				</div>
+
+				<span
+					class="sm:hidden w-px h-3 bg-[#F7E6CA]/25"
+					aria-hidden="true"></span>
+
+				<!-- Selector de idioma editorial ES / EN -->
+				<div
+					role="group"
+					aria-label="Selector de idioma / Language selector"
+					class="flex items-center gap-1.5 sm:fixed sm:top-6 sm:right-8 md:top-7 md:right-12 sm:z-30 font-['Montserrat'] text-[9.5px] sm:text-[10.5px] tracking-[0.24em] uppercase animate-fade-up-1"
+				>
+					<button
+						type="button"
+						data-lang-btn="es"
+						aria-pressed="true"
+						class="neon-subtitle font-medium text-[#F29F38] hover:text-[#FFFDF9] transition-colors px-1.5 py-1 cursor-pointer"
 					>
-					<span
-						class="hidden sm:block w-6 h-px bg-gradient-to-r from-[#F29F38]/60 to-transparent transition-all duration-300 group-hover:w-9 group-hover:from-[#F29F38]"
-						aria-hidden="true"></span>
-				</button>
+						ES
+					</button>
+					<span class="text-[#F7E6CA]/35 select-none">/</span>
+					<button
+						type="button"
+						data-lang-btn="en"
+						aria-pressed="false"
+						class="neon-subtitle font-light text-[#F7E6CA]/55 hover:text-[#FFFDF9] transition-colors px-1.5 py-1 cursor-pointer"
+					>
+						EN
+					</button>
+				</div>
 			</div>
 
 			<!-- 1. Bloque del Título ("LA SALEROSA" con halo de neón cálido e incandescencia en movimiento) -->
 			<h1
-				class="w-full flex justify-center select-none animate-fade-up-1"
+				class="w-full flex justify-center select-none pointer-events-none animate-fade-up-1"
 			>
-				<span class="sr-only">La Salerosa</span>
+				<span class="sr-only"
+					>La Salerosa — Canciones Líricas de Cristóbal Oudrid · Mar
+					Morán (soprano) y Aurelio Viribay (piano)</span
+				>
 				<LogoLaSalerosa
 					class="w-[86vw] sm:w-[50vw] max-w-none h-auto"
 				/>
@@ -154,11 +181,13 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 				class="font-['Montserrat'] uppercase flex flex-col items-center gap-0.5 mt-1 sm:mt-1.5 text-center animate-fade-up-2"
 			>
 				<p
+					data-i18n="creditsSongs"
 					class="neon-subtitle font-medium tracking-[0.18em] sm:tracking-[0.25em] text-[8.5px] sm:text-[11px] md:text-xs text-[#F7E6CA] pl-[0.18em] sm:pl-[0.25em]"
 				>
 					CANCIONES LÍRICAS DE CRISTÓBAL OUDRID
 				</p>
 				<p
+					data-i18n="creditsPiano"
 					class="neon-subtitle font-medium tracking-[0.22em] sm:tracking-[0.28em] text-[8.5px] sm:text-[11px] md:text-xs text-[#F7E6CA] pl-[0.22em] sm:pl-[0.28em]"
 				>
 					AURELIO VIRIBAY · PIANO
@@ -191,6 +220,7 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 						class="w-5 sm:w-12 h-px shrink-0 bg-gradient-to-r from-transparent to-[#F29F38]/70"
 						aria-hidden="true"></span>
 					<span
+						data-i18n="countdownBadge"
 						class="font-['Montserrat'] font-medium text-[8.5px] sm:text-[10px] tracking-[0.15em] sm:tracking-[0.28em] uppercase text-[#F29F38] drop-shadow-[0_0_8px_rgba(242,159,56,0.65)] pl-[0.15em] sm:pl-[0.28em] whitespace-nowrap"
 					>
 						Estreno primer single 12 de Nov
@@ -213,6 +243,7 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 							>03</span
 						>
 						<span
+							data-i18n="unitDays"
 							class="font-['Montserrat'] text-[8px] sm:text-[9px] tracking-[0.28em] uppercase text-[#D4A383] mt-1 pl-[0.28em]"
 							>Días</span
 						>
@@ -232,6 +263,7 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 							>00</span
 						>
 						<span
+							data-i18n="unitHours"
 							class="font-['Montserrat'] text-[8px] sm:text-[9px] tracking-[0.28em] uppercase text-[#D4A383] mt-1 pl-[0.28em]"
 							>Horas</span
 						>
@@ -251,6 +283,7 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 							>00</span
 						>
 						<span
+							data-i18n="unitMins"
 							class="font-['Montserrat'] text-[8px] sm:text-[9px] tracking-[0.28em] uppercase text-[#D4A383] mt-1 pl-[0.28em]"
 							>Min</span
 						>
@@ -270,6 +303,7 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 							>00</span
 						>
 						<span
+							data-i18n="unitSecs"
 							class="font-['Montserrat'] text-[8px] sm:text-[9px] tracking-[0.28em] uppercase text-[#D4A383] mt-1 pl-[0.28em]"
 							>Seg</span
 						>
@@ -300,6 +334,7 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 								class="absolute opacity-0 pointer-events-none w-0 h-0 -z-10"
 							/>
 							<input
+								id="vip-email-input"
 								type="email"
 								required
 								placeholder="Tu correo electrónico"
@@ -307,7 +342,9 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 								class="flex-1 min-w-0 bg-transparent px-3 sm:px-4 py-2 text-[11px] sm:text-sm text-[#FFFDF9] placeholder-[#F7E6CA]/45 font-['Montserrat'] focus:outline-none select-text"
 							/>
 							<button
+								id="vip-submit-btn"
 								type="submit"
+								data-i18n="ctaSubmit"
 								class="neon-cta rounded-full px-3.5 sm:px-6 py-2.5 bg-gradient-to-r from-[#F29F38] via-[#ffae42] to-[#e08922] hover:from-[#ffc066] hover:to-[#F29F38] text-[#160402] font-['Montserrat'] font-semibold text-[9.5px] sm:text-[11px] tracking-[0.11em] sm:tracking-[0.16em] uppercase whitespace-nowrap transition-all cursor-pointer"
 							>
 								Unirme al estreno
@@ -315,6 +352,7 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 						</div>
 
 						<p
+							data-i18n-html="formSubtext"
 							class="font-['Montserrat'] font-light text-[10px] sm:text-xs text-[#F7E6CA]/75 tracking-wide mt-2 leading-relaxed text-balance"
 						>
 							Recibe el aviso de salida el <span
@@ -355,13 +393,17 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 											stroke-linejoin="round"></path>
 									</svg>
 								</span>
-								<span class="group-hover:text-[#F7E6CA]/90 transition-colors">
+								<span
+									data-i18n="rgpdPrefix"
+									class="group-hover:text-[#F7E6CA]/90 transition-colors"
+								>
 									Acepto recibir el aviso del estreno y la
 								</span>
 							</label>
 							<button
 								type="button"
 								id="open-privacy-modal"
+								data-i18n="rgpdLink"
 								class="underline decoration-[#F29F38]/55 hover:decoration-[#F29F38] underline-offset-2 text-[#F7E6CA]/85 hover:text-[#FFFDF9] transition-colors cursor-pointer"
 							>
 								Política de Privacidad
@@ -380,6 +422,7 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 							class="w-6 h-px bg-gradient-to-r from-transparent to-[#F29F38]/70"
 							aria-hidden="true"></span>
 						<p
+							data-i18n="successBadge"
 							class="neon-subtitle font-['Montserrat'] font-light text-[10px] sm:text-[11px] text-[#FFFDF9] tracking-[0.24em] uppercase whitespace-nowrap"
 						>
 							✦ Invitación activada para el estreno
@@ -391,6 +434,7 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 					<button
 						type="button"
 						id="reopen-welcome-modal"
+						data-i18n="reopenLetter"
 						class="font-['Montserrat'] font-light text-[9.5px] sm:text-[10.5px] text-[#F29F38]/90 hover:text-[#FFFDF9] tracking-[0.18em] uppercase underline decoration-[#F29F38]/50 underline-offset-4 transition-colors cursor-pointer"
 					>
 						Leer carta de Mar Morán
@@ -398,6 +442,61 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 				</div>
 			</div>
 		</main>
+
+		<!-- Contenido semántico y repertorio completo indexable para buscadores (SEO) y lectores de pantalla -->
+		<article class="sr-only">
+			<h2>
+				La Salerosa: Primera Grabación Mundial de las Canciones Líricas
+				de Cristóbal Oudrid por Mar Morán y Aurelio Viribay
+			</h2>
+			<p>
+				«La Salerosa» es la primera grabación mundial (World Premiere
+				Recording) dedicada a las Canciones Líricas de Cristóbal Oudrid
+				(1825–1877), uno de los compositores fundamentales de la
+				zarzuela, la canción española y el patrimonio lírico del siglo
+				XIX en España. En este álbum discográfico, la soprano Mar Morán
+				y el pianista Aurelio Viribay recuperan para el repertorio de la
+				canción de concierto dieciséis joyas vocales de salón y teatro
+				lírico español.
+			</p>
+			<h3>Intérpretes y Compositor</h3>
+			<ul>
+				<li>
+					<strong>Mar Morán (soprano)</strong>: Intérprete de ópera,
+					zarzuela y canción lírica española.
+				</li>
+				<li>
+					<strong>Aurelio Viribay (piano)</strong>: Pianista
+					especializado en repertorio vocal y canción española de
+					concierto.
+				</li>
+				<li>
+					<strong>Cristóbal Oudrid (compositor, 1825–1877)</strong>:
+					Maestro clave del romanticismo musical español, autor de
+					zarzuelas históricas y canciones líricas españolas para voz
+					y piano.
+				</li>
+			</ul>
+			<h3>Repertorio completo del disco «La Salerosa» (16 canciones)</h3>
+			<ol>
+				<li>La Macarena — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
+				<li>La Salerosa — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
+				<li>Soledad — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
+				<li>La hamaca — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
+				<li>La pajarita — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
+				<li>La huevera de Fuencarral — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
+				<li>Malagueña — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
+				<li>Fugaz Ventura — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
+				<li>Tres por ciento — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
+				<li>Ojos negros y ojos azules — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
+				<li>Nueva rondalla Aragonesa — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
+				<li>El torero Rozicler — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
+				<li>El mareíto — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
+				<li>Me acuerdo — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
+				<li>Te acuerdas — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
+				<li>El tres por ciento — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
+			</ol>
+		</article>
 
 		<!-- Modal de Carta Personal de Bienvenida firmada por Mar Morán -->
 		<div
@@ -425,6 +524,7 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 						class="w-8 h-px bg-gradient-to-r from-transparent to-[#F29F38]/70"
 						aria-hidden="true"></span>
 					<span
+						data-i18n="welcomeBadge"
 						class="font-['Montserrat'] font-medium text-[9px] tracking-[0.28em] uppercase text-[#F29F38] pl-[0.28em]"
 					>
 						Invitación confirmada · 12 Nov
@@ -436,12 +536,14 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 
 				<h2
 					id="welcome-modal-title"
+					data-i18n="welcomeTitle"
 					class="neon-subtitle font-['Cinzel'] text-lg sm:text-xl text-[#FFFDF9] tracking-[0.12em] uppercase mb-4"
 				>
 					Gracias por estar al otro lado
 				</h2>
 
 				<div
+					data-i18n-html="welcomeBody"
 					class="font-['Montserrat'] font-light text-xs sm:text-[13px] text-[#F7E6CA]/90 space-y-3 leading-relaxed text-balance"
 				>
 					<p>
@@ -471,6 +573,7 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 				<!-- Firma caligráfica de Mar Morán -->
 				<div class="mt-5 pt-4 border-t border-[#F7E6CA]/15 flex flex-col items-center">
 					<span
+						data-i18n="welcomeSignoff"
 						class="font-['Montserrat'] font-light text-[10px] tracking-[0.22em] uppercase text-[#D4A383] mb-1 pl-[0.22em]"
 					>
 						Con todo mi cariño,
@@ -498,6 +601,7 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 				<div class="flex items-center justify-between mb-3">
 					<h2
 						id="privacy-modal-title"
+						data-i18n="privacyTitle"
 						class="font-['Cinzel'] text-sm sm:text-base tracking-[0.15em] uppercase text-[#F29F38]"
 					>
 						Política de Privacidad
@@ -513,6 +617,7 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 				</div>
 
 				<div
+					data-i18n-html="privacyBody"
 					class="font-['Montserrat'] font-light text-[11px] sm:text-xs text-[#F7E6CA]/85 space-y-2.5 leading-relaxed max-h-[65dvh] overflow-y-auto pr-1"
 				>
 					<p>
@@ -568,6 +673,91 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 	</div>
 
 	<script>
+		type Lang = "es" | "en";
+
+		const translations: Record<Lang, Record<string, string>> = {
+			es: {
+				soundActivate: "Activar sonido",
+				soundMute: "Silenciar adelanto",
+				soundAriaActivate: "Activar sonido del adelanto",
+				soundAriaMute: "Silenciar adelanto",
+				creditsSongs: "CANCIONES LÍRICAS DE CRISTÓBAL OUDRID",
+				creditsPiano: "AURELIO VIRIBAY · PIANO",
+				countdownBadge: "Estreno primer single 12 de Nov",
+				unitDays: "Días",
+				unitHours: "Horas",
+				unitMins: "Min",
+				unitSecs: "Seg",
+				emailPlaceholder: "Tu correo electrónico",
+				ctaSubmit: "Unirme al estreno",
+				ctaLoading: "Activando...",
+				formSubtext:
+					'Recibe el aviso de salida el <span class="whitespace-nowrap">12 de noviembre</span> y descubre los secretos de esta <strong class="font-medium text-[#F7E6CA]/95">primera grabación mundial</strong>.',
+				rgpdPrefix: "Acepto recibir el aviso del estreno y la",
+				rgpdLink: "Política de Privacidad",
+				successBadge: "✦ Invitación activada para el estreno",
+				reopenLetter: "Leer carta de Mar Morán",
+				welcomeBadge: "Invitación confirmada · 12 Nov",
+				welcomeTitle: "Gracias por estar al otro lado",
+				welcomeBody: `
+					<p>Qué ilusión saber que me acompañarás cuando <strong class="font-medium text-[#FFFDF9]">«La Salerosa»</strong> vea por fin la luz.</p>
+					<p>Dar vida junto al maestro <strong class="font-medium text-[#FFFDF9]">Aurelio Viribay</strong> a estas <em>Canciones Líricas de Cristóbal Oudrid</em> —en su <strong class="font-medium text-[#FFFDF9]">primera grabación mundial</strong>— ha sido un viaje de emoción, raíz y belleza que deseaba compartir contigo en primicia.</p>
+					<p>El próximo <strong class="font-medium text-[#FFFDF9]">12 de noviembre</strong> recibirás en tu correo el acceso directo al estreno del primer single y detalles inéditos del proyecto.</p>
+				`,
+				welcomeSignoff: "Con todo mi cariño,",
+				privacyTitle: "Política de Privacidad",
+				privacyBody: `
+					<p><strong class="font-medium text-[#FFFDF9]">Responsable:</strong> Mar Morán (<a href="mailto:info@marmoransoprano.com" class="underline decoration-[#F29F38]/60 underline-offset-2 text-[#FFFDF9] hover:text-[#F29F38]">info@marmoransoprano.com</a>).</p>
+					<p><strong class="font-medium text-[#FFFDF9]">Finalidad:</strong> Gestionar tu suscripción a la lista de espera para enviarte el aviso de lanzamiento del single y álbum <em>«La Salerosa — Canciones Líricas de Cristóbal Oudrid»</em>, así como contenido exclusivo sobre esta primera grabación mundial.</p>
+					<p><strong class="font-medium text-[#FFFDF9]">Legitimación:</strong> Consentimiento expreso del interesado (art. 6.1.a RGPD) otorgado al marcar la casilla de aceptación.</p>
+					<p><strong class="font-medium text-[#FFFDF9]">Conservación y destinatarios:</strong> Tus datos se conservarán únicamente durante la campaña de lanzamiento o hasta que solicites tu baja. No se cederán a terceros salvo obligación legal (almacenamiento seguro en Google Workspace).</p>
+					<p><strong class="font-medium text-[#FFFDF9]">Derechos:</strong> Puedes ejercer tus derechos de acceso, rectificación, supresión, limitación y oposición en cualquier momento escribiendo a <a href="mailto:info@marmoransoprano.com" class="underline decoration-[#F29F38]/60 underline-offset-2 text-[#FFFDF9] hover:text-[#F29F38]">info@marmoransoprano.com</a>.</p>
+					<p class="text-[10px] text-[#F7E6CA]/55 pt-1 border-t border-[#F7E6CA]/15">Esta página no utiliza cookies publicitarias ni de seguimiento de terceros.</p>
+				`,
+			},
+			en: {
+				soundActivate: "Enable sound",
+				soundMute: "Mute preview",
+				soundAriaActivate: "Enable audio preview",
+				soundAriaMute: "Mute audio preview",
+				creditsSongs: "LYRIC SONGS BY CRISTÓBAL OUDRID",
+				creditsPiano: "AURELIO VIRIBAY · PIANO",
+				countdownBadge: "First single premiere Nov 12",
+				unitDays: "Days",
+				unitHours: "Hours",
+				unitMins: "Min",
+				unitSecs: "Sec",
+				emailPlaceholder: "Your email address",
+				ctaSubmit: "Join the premiere",
+				ctaLoading: "Joining...",
+				formSubtext:
+					'Receive the release alert on <span class="whitespace-nowrap">November 12</span> and discover the secrets of this <strong class="font-medium text-[#F7E6CA]/95">world premiere recording</strong>.',
+				rgpdPrefix: "I agree to receive the premiere alert and the",
+				rgpdLink: "Privacy Policy",
+				successBadge: "✦ Premiere invitation activated",
+				reopenLetter: "Read Mar Morán's letter",
+				welcomeBadge: "Invitation confirmed · Nov 12",
+				welcomeTitle: "Thank you for being on the other side",
+				welcomeBody: `
+					<p>What a joy to know you will be with me when <strong class="font-medium text-[#FFFDF9]">“La Salerosa”</strong> finally sees the light.</p>
+					<p>Bringing to life alongside maestro <strong class="font-medium text-[#FFFDF9]">Aurelio Viribay</strong> these <em>Lyric Songs by Cristóbal Oudrid</em> —in their <strong class="font-medium text-[#FFFDF9]">world premiere recording</strong>— has been a journey of emotion, heritage, and beauty that I wished to share with you first.</p>
+					<p>On <strong class="font-medium text-[#FFFDF9]">November 12</strong>, you will receive direct access to the premiere of the first single and exclusive details about the project in your inbox.</p>
+				`,
+				welcomeSignoff: "With all my love,",
+				privacyTitle: "Privacy Policy",
+				privacyBody: `
+					<p><strong class="font-medium text-[#FFFDF9]">Data Controller:</strong> Mar Morán (<a href="mailto:info@marmoransoprano.com" class="underline decoration-[#F29F38]/60 underline-offset-2 text-[#FFFDF9] hover:text-[#F29F38]">info@marmoransoprano.com</a>).</p>
+					<p><strong class="font-medium text-[#FFFDF9]">Purpose:</strong> To manage your subscription to the waiting list in order to send you the release alert for the single and album <em>“La Salerosa — Lyric Songs by Cristóbal Oudrid”</em>, as well as exclusive content about this world premiere recording.</p>
+					<p><strong class="font-medium text-[#FFFDF9]">Legal Basis:</strong> Express consent of the data subject (Art. 6.1.a GDPR) granted by checking the acceptance box.</p>
+					<p><strong class="font-medium text-[#FFFDF9]">Retention & Recipients:</strong> Your data will be kept only during the launch campaign or until you request removal. It will not be shared with third parties except by legal obligation (secure storage on Google Workspace).</p>
+					<p><strong class="font-medium text-[#FFFDF9]">Rights:</strong> You may exercise your rights of access, rectification, erasure, restriction, and objection at any time by writing to <a href="mailto:info@marmoransoprano.com" class="underline decoration-[#F29F38]/60 underline-offset-2 text-[#FFFDF9] hover:text-[#F29F38]">info@marmoransoprano.com</a>.</p>
+					<p class="text-[10px] text-[#F7E6CA]/55 pt-1 border-t border-[#F7E6CA]/15">This page does not use advertising or third-party tracking cookies.</p>
+				`,
+			},
+		};
+
+		let currentLang: Lang = "es";
+
 		const openPrivacyBtn = document.getElementById("open-privacy-modal");
 		const closePrivacyBtn = document.getElementById("close-privacy-modal");
 		const privacyModal = document.getElementById("privacy-modal");
@@ -607,9 +797,6 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 				welcomeModal?.classList.add("hidden");
 			}
 		});
-		const video = document.getElementById(
-			"ambient-video",
-		) as HTMLVideoElement | null;
 		const previewAudio = document.getElementById(
 			"preview-audio",
 		) as HTMLAudioElement | null;
@@ -621,14 +808,97 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 		) as HTMLSpanElement | null;
 
 		let isAudioPlaying = false;
-
-		if (video) {
-			video.addEventListener("loadeddata", () => {
-				video.classList.remove("opacity-0");
-			});
-		}
-
 		let fadeInterval: number | undefined;
+
+		const updateSoundButtonText = () => {
+			if (!soundToggle || !soundLabel) return;
+			const t = translations[currentLang];
+			soundToggle.setAttribute(
+				"aria-label",
+				isAudioPlaying ? t.soundAriaMute : t.soundAriaActivate,
+			);
+			soundLabel.textContent = isAudioPlaying
+				? t.soundMute
+				: t.soundActivate;
+		};
+
+		const langButtons =
+			document.querySelectorAll<HTMLButtonElement>("[data-lang-btn]");
+		const emailInputEl = document.getElementById(
+			"vip-email-input",
+		) as HTMLInputElement | null;
+
+		const setLanguage = (lang: Lang) => {
+			currentLang = lang;
+			document.documentElement.lang = lang;
+			const t = translations[lang];
+
+			document
+				.querySelectorAll<HTMLElement>("[data-i18n]")
+				.forEach((el) => {
+					const key = el.getAttribute("data-i18n");
+					if (key && t[key]) {
+						el.textContent = t[key];
+					}
+				});
+
+			document
+				.querySelectorAll<HTMLElement>("[data-i18n-html]")
+				.forEach((el) => {
+					const key = el.getAttribute("data-i18n-html");
+					if (key && t[key]) {
+						el.innerHTML = t[key];
+					}
+				});
+
+			if (emailInputEl) {
+				emailInputEl.placeholder = t.emailPlaceholder;
+				emailInputEl.setAttribute("aria-label", t.emailPlaceholder);
+			}
+
+			updateSoundButtonText();
+
+			langButtons.forEach((btn) => {
+				const isSelected = btn.getAttribute("data-lang-btn") === lang;
+				btn.setAttribute("aria-pressed", String(isSelected));
+				if (isSelected) {
+					btn.classList.remove("font-light", "text-[#F7E6CA]/55");
+					btn.classList.add("font-medium", "text-[#F29F38]");
+				} else {
+					btn.classList.remove("font-medium", "text-[#F29F38]");
+					btn.classList.add("font-light", "text-[#F7E6CA]/55");
+				}
+			});
+
+			try {
+				window.localStorage.setItem("salerosa_lang", lang);
+			} catch {
+				// Ignore storage errors
+			}
+		};
+
+		langButtons.forEach((btn) => {
+			btn.addEventListener("click", () => {
+				const selected = btn.getAttribute("data-lang-btn") as Lang;
+				if (selected === "es" || selected === "en") {
+					setLanguage(selected);
+				}
+			});
+		});
+
+		try {
+			const urlLang = new URLSearchParams(window.location.search).get(
+				"lang",
+			);
+			const savedLang = window.localStorage.getItem("salerosa_lang");
+			if (urlLang === "en" || urlLang === "es") {
+				setLanguage(urlLang);
+			} else if (savedLang === "en" || savedLang === "es") {
+				setLanguage(savedLang);
+			}
+		} catch {
+			// Default ES
+		}
 
 		if (previewAudio && soundToggle && soundLabel) {
 			soundToggle.addEventListener("click", () => {
@@ -640,6 +910,9 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 				}
 
 				if (willBeActive) {
+					if (!previewAudio.getAttribute("src") && previewAudio.dataset.src) {
+						previewAudio.src = previewAudio.dataset.src;
+					}
 					previewAudio.volume = 0;
 					previewAudio.play().catch(() => {});
 					let vol = 0;
@@ -667,15 +940,7 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 					String(willBeActive),
 				);
 				soundToggle.setAttribute("aria-pressed", String(willBeActive));
-				soundToggle.setAttribute(
-					"aria-label",
-					willBeActive
-						? "Silenciar adelanto"
-						: "Activar sonido del adelanto",
-				);
-				soundLabel.textContent = willBeActive
-					? "Silenciar adelanto"
-					: "Activar sonido";
+				updateSoundButtonText();
 			});
 		}
 
@@ -755,7 +1020,7 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 
 				if (submitBtn) {
 					submitBtn.disabled = true;
-					submitBtn.textContent = "Activando...";
+					submitBtn.textContent = translations[currentLang].ctaLoading;
 				}
 
 				const payload = {
@@ -770,9 +1035,9 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 				const directWebhook = vipForm.dataset.endpoint;
 				let sent = false;
 
-				// 1. Intentar vía Serverless Function de Vercel (/api/subscribe) para evitar bloqueos CORS
+				// 1. Intentar vía Serverless Function de Vercel (/lasalerosa/api/subscribe) para evitar bloqueos CORS
 				try {
-					const res = await fetch("/api/subscribe", {
+					const res = await fetch("/lasalerosa/api/subscribe", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
@@ -1044,6 +1309,20 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 
 			const ANIM_DURATION_MS = 3000;
 
+			// Creamos un único nodo reutilizable en el DOM para no disparar MutationObservers de extensiones (como NordPass) cada 3 segundos
+			const whisperEl = document.createElement("div");
+			whisperEl.className =
+				"song-whisper hidden absolute flex-col gap-0.5 sm:gap-1 pointer-events-none select-none";
+			const whisperText = document.createElement("p");
+			whisperText.className =
+				"font-['Cinzel'] text-[clamp(0.56rem,2.2vw,0.7rem)] sm:text-[clamp(0.75rem,1.05vw,0.95rem)] tracking-[0.08em] sm:tracking-[0.14em] text-[#F7E6CA]/85 leading-snug max-w-[36vw] sm:max-w-none";
+			const whisperStreak = document.createElement("div");
+			whisperStreak.className =
+				"song-whisper-streak w-[15vw] max-w-[72px] sm:w-28 sm:max-w-none";
+			whisperEl.appendChild(whisperText);
+			whisperEl.appendChild(whisperStreak);
+			songContainer.appendChild(whisperEl);
+
 			const scheduleNextWhisper = () => {
 				const emptyPauseMs = 700 + Math.floor(Math.random() * 400);
 				window.setTimeout(spawnSongWhisper, emptyPauseMs);
@@ -1072,34 +1351,39 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 					if (topPx > maxTopPx) topPx = maxTopPx;
 				}
 
-				const el = document.createElement("div");
-				el.className =
-					"song-whisper absolute flex flex-col gap-0.5 sm:gap-1 pointer-events-none select-none";
-
-				if (zone.left) el.style.left = zone.left;
-				if (zone.right) el.style.right = zone.right;
-				el.style.top = `${Math.round(topPx)}px`;
-				el.style.textAlign = zone.align;
-				el.style.alignItems =
+				whisperEl.style.left = zone.left || "";
+				whisperEl.style.right = zone.right || "";
+				whisperEl.style.top = `${Math.round(topPx)}px`;
+				whisperEl.style.textAlign = zone.align;
+				whisperEl.style.alignItems =
 					zone.align === "right" ? "flex-end" : "flex-start";
 
 				const travelX = isMobile ? 14 : 26;
-				el.style.setProperty("--tx-start", `${-travelX * zone.dir}px`);
-				el.style.setProperty("--ty-start", "4px");
-				el.style.setProperty("--tx-end", `${travelX * zone.dir}px`);
-				el.style.setProperty("--ty-end", "-4px");
+				whisperEl.style.setProperty(
+					"--tx-start",
+					`${-travelX * zone.dir}px`,
+				);
+				whisperEl.style.setProperty("--ty-start", "4px");
+				whisperEl.style.setProperty(
+					"--tx-end",
+					`${travelX * zone.dir}px`,
+				);
+				whisperEl.style.setProperty("--ty-end", "-4px");
 
-				el.innerHTML = `
-				<p class="font-['Cinzel'] text-[clamp(0.56rem,2.2vw,0.7rem)] sm:text-[clamp(0.75rem,1.05vw,0.95rem)] tracking-[0.08em] sm:tracking-[0.14em] text-[#F7E6CA]/85 leading-snug max-w-[36vw] sm:max-w-none">
-					${songTitle}
-				</p>
-				<div class="song-whisper-streak w-[15vw] max-w-[72px] sm:w-28 sm:max-w-none"></div>
-			`;
+				whisperText.textContent = songTitle;
 
-				songContainer.appendChild(el);
+				// Reiniciamos la animación CSS sin añadir ni eliminar nodos del DOM
+				whisperEl.classList.remove("hidden");
+				whisperEl.classList.add("flex");
+				whisperEl.style.animation = "none";
+				whisperStreak.style.animation = "none";
+				void whisperEl.offsetWidth;
+				whisperEl.style.animation = "";
+				whisperStreak.style.animation = "";
 
 				window.setTimeout(() => {
-					el.remove();
+					whisperEl.classList.add("hidden");
+					whisperEl.classList.remove("flex");
 					scheduleNextWhisper();
 				}, ANIM_DURATION_MS);
 			};

@@ -8,10 +8,148 @@ interface Props {
 }
 
 const {
-	title = 'La Salerosa — Mar Morán · Aurelio Viribay | Cristóbal Oudrid',
-	description = 'Lanzamiento oficial del single "La Salerosa", de las Canciones Líricas de Cristóbal Oudrid interpretadas por Mar Morán y Aurelio Viribay.',
+	title = 'La Salerosa — Mar Morán y Aurelio Viribay | Canciones Líricas de Cristóbal Oudrid',
+	description = 'Primera grabación mundial de «La Salerosa» y las Canciones Líricas de Cristóbal Oudrid. La soprano Mar Morán y el pianista Aurelio Viribay rescatan joyas inéditas de la canción española y la zarzuela del siglo XIX.',
 	image = '/images/cover-1800.jpg',
 } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const siteUrl = (
+	import.meta.env.PUBLIC_SITE_URL || 'https://www.marmoransoprano.com/lasalerosa'
+).replace(/\/$/, '');
+const canonicalUrl = siteUrl;
+const ogImageUrl = `${siteUrl}${image.startsWith('/') ? image : `/${image}`}`;
+const audioPreviewUrl = `${siteUrl}/audio/02-La%20salerosa'web.mp3`;
+
+const tracks = [
+	'La Macarena',
+	'La Salerosa',
+	'Soledad',
+	'La hamaca',
+	'La pajarita',
+	'La huevera de Fuencarral',
+	'Malagueña',
+	'Fugaz Ventura',
+	'Tres por ciento',
+	'Ojos negros y ojos azules',
+	'Nueva rondalla Aragonesa',
+	'El torero Rozicler',
+	'El mareíto',
+	'Me acuerdo',
+	'Te acuerdas',
+	'El tres por ciento',
+];
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'WebPage',
+			'@id': `${canonicalUrl}/#webpage`,
+			url: canonicalUrl,
+			name: title,
+			inLanguage: 'es-ES',
+			description,
+			isPartOf: {
+				'@type': 'WebSite',
+				'@id': 'https://www.marmoransoprano.com/#website',
+				url: 'https://www.marmoransoprano.com',
+				name: 'Mar Morán · Soprano',
+			},
+		},
+		{
+			'@type': 'Person',
+			'@id': 'https://www.marmoransoprano.com/#mar-moran',
+			name: 'Mar Morán',
+			jobTitle: 'Soprano',
+			description:
+				'Soprano española intérprete de ópera, zarzuela y canción lírica española.',
+			url: 'https://www.marmoransoprano.com',
+			sameAs: ['https://www.marmoransoprano.com', 'https://marmoransoprano.com'],
+		},
+		{
+			'@type': 'Person',
+			'@id': `${canonicalUrl}/#aurelio-viribay`,
+			name: 'Aurelio Viribay',
+			jobTitle: 'Pianista',
+			description:
+				'Pianista español especializado en el acompañamiento vocal, canción lírica española y repertorio vocal.',
+			sameAs: [
+				'https://aurelioviribay.com',
+				'https://es.wikipedia.org/wiki/Aurelio_Viribay',
+				'https://www.wikidata.org/wiki/Q5712036',
+			],
+		},
+		{
+			'@type': 'Person',
+			'@id': `${canonicalUrl}/#cristobal-oudrid`,
+			name: 'Cristóbal Oudrid',
+			birthDate: '1825-02-07',
+			deathDate: '1877-03-13',
+			description:
+				'Compositor, pianista y director de orquesta español del siglo XIX, figura fundamental de la zarzuela y la canción lírica española.',
+			sameAs: [
+				'https://es.wikipedia.org/wiki/Crist%C3%B3bal_Oudrid',
+				'https://www.wikidata.org/wiki/Q3002929',
+			],
+		},
+		{
+			'@type': 'MusicAlbum',
+			'@id': `${canonicalUrl}/#album`,
+			name: 'La Salerosa — Canciones Líricas de Cristóbal Oudrid',
+			alternateName: 'La Salerosa (World Premiere Recording)',
+			url: canonicalUrl,
+			image: ogImageUrl,
+			datePublished: '2026-11-12',
+			albumProductionType: 'https://schema.org/StudioAlbum',
+			albumReleaseType: 'https://schema.org/AlbumRelease',
+			inLanguage: 'es',
+			genre: [
+				'Canción lírica española',
+				'Canción española',
+				'Zarzuela',
+				'Música clásica española',
+				'Canción de concierto del siglo XIX',
+			],
+			description:
+				'Primera grabación mundial (World Premiere Recording) de las Canciones Líricas de Cristóbal Oudrid, interpretadas por la soprano Mar Morán y el pianista Aurelio Viribay.',
+			byArtist: [
+				{ '@id': 'https://www.marmoransoprano.com/#mar-moran' },
+				{ '@id': `${canonicalUrl}/#aurelio-viribay` },
+			],
+			numTracks: tracks.length,
+			track: {
+				'@type': 'ItemList',
+				numberOfItems: tracks.length,
+				itemListElement: tracks.map((trackName, index) => ({
+					'@type': 'ListItem',
+					position: index + 1,
+					item: {
+						'@type': 'MusicRecording',
+						name: trackName,
+						inLanguage: 'es',
+						genre: ['Canción lírica española', 'Canción española', 'Zarzuela'],
+						byArtist: [
+							{ '@id': 'https://www.marmoransoprano.com/#mar-moran' },
+							{ '@id': `${canonicalUrl}/#aurelio-viribay` },
+						],
+						composer: { '@id': `${canonicalUrl}/#cristobal-oudrid` },
+						...(trackName === 'La Salerosa'
+							? {
+									audio: {
+										'@type': 'AudioObject',
+										contentUrl: audioPreviewUrl,
+										encodingFormat: 'audio/mpeg',
+										name: 'La Salerosa — Adelanto oficial (Mar Morán & Aurelio Viribay)',
+									},
+								}
+							: {}),
+					},
+				})),
+			},
+		},
+	],
+};
 ---
 
 <!doctype html>
@@ -20,24 +158,57 @@ const {
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="theme-color" content="#160402" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+		<link rel="icon" href={`${base}/favicon.ico`} sizes="48x48" />
+		<link
+			rel="apple-touch-icon"
+			sizes="180x180"
+			href={`${base}/apple-touch-icon.png`}
+		/>
+		<link rel="canonical" href={canonicalUrl} />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<meta name="description" content={description} />
+		<meta
+			name="keywords"
+			content="Cristóbal Oudrid, Mar Morán, Aurelio Viribay, La Salerosa, Canciones líricas de Cristóbal Oudrid, Canción española, Zarzuela, Canción lírica española, Soprano Mar Morán, música clásica española, canción de concierto siglo XIX, primera grabación mundial"
+		/>
+		<meta name="author" content="Mar Morán · Aurelio Viribay" />
+		<meta
+			name="robots"
+			content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+		/>
 
 		<!-- Open Graph / Social -->
-		<meta property="og:type" content="music.song" />
+		<meta property="og:type" content="music.album" />
 		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content="La Salerosa · Mar Morán" />
+		<meta property="og:url" content={canonicalUrl} />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
-		<meta property="og:image" content={image} />
+		<meta property="og:image" content={ogImageUrl} />
+		<meta property="og:image:width" content="1800" />
+		<meta property="og:image:height" content="1800" />
+		<meta
+			property="og:image:alt"
+			content="Portada de La Salerosa — Canciones Líricas de Cristóbal Oudrid por la soprano Mar Morán y el pianista Aurelio Viribay"
+		/>
 
 		<!-- Twitter Card -->
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
-		<meta name="twitter:image" content={image} />
+		<meta name="twitter:image" content={ogImageUrl} />
+		<meta
+			name="twitter:image:alt"
+			content="Portada de La Salerosa — Canciones Líricas de Cristóbal Oudrid por Mar Morán y Aurelio Viribay"
+		/>
+
+		<!-- Datos Estructurados Schema.org (JSON-LD) para Google Knowledge Graph -->
+		<script
+			type="application/ld+json"
+			set:html={JSON.stringify(jsonLd)}
+		/>
 
 		<!-- Google Fonts: Pinyon Script (400), Cinzel (400, 500, 600) & Montserrat (200, 300, 500) -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
