@@ -464,7 +464,7 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 						El próximo <strong class="font-medium text-[#FFFDF9]"
 							>12 de noviembre</strong
 						> recibirás en tu correo el acceso directo al estreno del
-						primer single y las historias íntimas que esconde esta grabación.
+						primer single y detalles inéditos del proyecto.
 					</p>
 				</div>
 
@@ -481,14 +481,6 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 						Mar Morán
 					</p>
 				</div>
-
-				<button
-					type="button"
-					id="welcome-modal-cta"
-					class="mt-5 neon-cta rounded-full px-6 py-2.5 bg-gradient-to-r from-[#F29F38] via-[#ffae42] to-[#e08922] hover:from-[#ffc066] hover:to-[#F29F38] text-[#160402] font-['Montserrat'] font-semibold text-[10px] tracking-[0.18em] uppercase transition-all cursor-pointer"
-				>
-					Volver a la portada
-				</button>
 			</div>
 		</div>
 
@@ -582,7 +574,6 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 
 		const welcomeModal = document.getElementById("welcome-modal");
 		const closeWelcomeBtn = document.getElementById("close-welcome-modal");
-		const welcomeCtaBtn = document.getElementById("welcome-modal-cta");
 		const reopenWelcomeBtn = document.getElementById("reopen-welcome-modal");
 
 		if (openPrivacyBtn && closePrivacyBtn && privacyModal) {
@@ -602,7 +593,6 @@ import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
 		if (welcomeModal) {
 			const hideWelcome = () => welcomeModal.classList.add("hidden");
 			closeWelcomeBtn?.addEventListener("click", hideWelcome);
-			welcomeCtaBtn?.addEventListener("click", hideWelcome);
 			reopenWelcomeBtn?.addEventListener("click", () => {
 				welcomeModal.classList.remove("hidden");
 			});
