@@ -20,6 +20,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 				<img
 					src={`${base}/portada-la-salerosa-desktop.jpg`}
 					alt="Mar Morán en la portada de La Salerosa — Canciones Líricas de Cristóbal Oudrid junto al pianista Aurelio Viribay"
+					fetchpriority="high"
+					decoding="async"
 					class="w-full h-full object-cover object-center select-none pointer-events-none"
 				/>
 			</picture>
@@ -206,7 +208,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 		<!-- CAPA 2: Contenedor Principal Inferior Minimalista y Escultórico (z-20) -->
 		<main
-			class="relative z-20 mt-auto w-full max-w-xl mx-auto px-5 pb-6 sm:pb-8 md:pb-10 text-center flex flex-col items-center"
+			class="relative z-20 mt-auto w-full max-w-xl mx-auto px-5 pb-2.5 sm:pb-4 text-center flex flex-col items-center"
 		>
 			<!-- 1. Bloque de Cuenta Atrás del Primer Single -->
 			<div
@@ -443,6 +445,20 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 			</div>
 		</main>
 
+		<!-- CAPA 3: Footer minimalista con Copyright y Contacto -->
+		<footer
+			class="relative z-20 w-full px-4 pb-2.5 sm:pb-3.5 text-center font-['Montserrat'] font-light text-[8.5px] sm:text-[9.5px] tracking-[0.18em] uppercase text-[#F7E6CA]/45 animate-fade-up-4"
+		>
+			<span>© 2026 Mar Morán</span>
+			<span class="mx-1.5 text-[#F29F38]/40" aria-hidden="true">·</span>
+			<span data-i18n="footerContact">Contacto:</span>
+			<a
+				href="mailto:info@marmoransoprano.com"
+				class="text-[#F7E6CA]/65 hover:text-[#F29F38] transition-colors lowercase tracking-[0.1em] ml-0.5 select-text"
+				>info@marmoransoprano.com</a
+			>
+		</footer>
+
 		<!-- Contenido semántico y repertorio completo indexable para buscadores (SEO) y lectores de pantalla -->
 		<article class="sr-only">
 			<h2>
@@ -496,6 +512,19 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 				<li>Te acuerdas — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
 				<li>El tres por ciento — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
 			</ol>
+			<div lang="en">
+				<h3>
+					La Salerosa — World Premiere Recording of the Lyric Songs by
+					Cristóbal Oudrid
+				</h3>
+				<p>
+					“La Salerosa” is the world premiere recording of the Spanish
+					lyric songs (Canciones Líricas) by 19th-century zarzuela and
+					Spanish art song composer Cristóbal Oudrid (1825–1877),
+					performed by Spanish soprano Mar Morán and pianist Aurelio
+					Viribay.
+				</p>
+			</div>
 		</article>
 
 		<!-- Modal de Carta Personal de Bienvenida firmada por Mar Morán -->
@@ -673,6 +702,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 	</div>
 
 	<script>
+		import { pageview } from "@vercel/analytics";
+
 		type Lang = "es" | "en";
 
 		const translations: Record<Lang, Record<string, string>> = {
@@ -695,6 +726,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 					'Recibe el aviso de salida el <span class="whitespace-nowrap">12 de noviembre</span> y descubre los secretos de esta <strong class="font-medium text-[#F7E6CA]/95">primera grabación mundial</strong>.',
 				rgpdPrefix: "Acepto recibir el aviso del estreno y la",
 				rgpdLink: "Política de Privacidad",
+				footerContact: "Contacto:",
 				successBadge: "✦ Invitación activada para el estreno",
 				reopenLetter: "Leer carta de Mar Morán",
 				welcomeBadge: "Invitación confirmada · 12 Nov",
@@ -734,6 +766,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 					'Receive the release alert on <span class="whitespace-nowrap">November 12</span> and discover the secrets of this <strong class="font-medium text-[#F7E6CA]/95">world premiere recording</strong>.',
 				rgpdPrefix: "I agree to receive the premiere alert and the",
 				rgpdLink: "Privacy Policy",
+				footerContact: "Contact:",
 				successBadge: "✦ Premiere invitation activated",
 				reopenLetter: "Read Mar Morán's letter",
 				welcomeBadge: "Invitation confirmed · Nov 12",
@@ -915,6 +948,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 					}
 					previewAudio.volume = 0;
 					previewAudio.play().catch(() => {});
+					try {
+						pageview({
+							route: "/lasalerosa/evento/audio-play",
+							path: "/lasalerosa/evento/audio-play",
+						});
+					} catch {
+						// Ignorar si algún bloqueador detiene la analítica
+					}
 					let vol = 0;
 					fadeInterval = window.setInterval(() => {
 						vol = Math.min(1, vol + 0.08);

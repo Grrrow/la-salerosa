@@ -1,4 +1,5 @@
 ---
+import Analytics from '@vercel/analytics/astro';
 import '../styles/global.css';
 
 interface Props {
@@ -148,6 +149,54 @@ const jsonLd = {
 				})),
 			},
 		},
+		{
+			'@type': 'BreadcrumbList',
+			'@id': `${canonicalUrl}/#breadcrumb`,
+			itemListElement: [
+				{
+					'@type': 'ListItem',
+					position: 1,
+					name: 'Mar Morán · Soprano',
+					item: 'https://www.marmoransoprano.com',
+				},
+				{
+					'@type': 'ListItem',
+					position: 2,
+					name: 'La Salerosa — Canciones Líricas de Cristóbal Oudrid',
+					item: canonicalUrl,
+				},
+			],
+		},
+		{
+			'@type': 'FAQPage',
+			'@id': `${canonicalUrl}/#faq`,
+			mainEntity: [
+				{
+					'@type': 'Question',
+					name: '¿Qué es «La Salerosa» de Mar Morán y Aurelio Viribay?',
+					acceptedAnswer: {
+						'@type': 'Answer',
+						text: '«La Salerosa» es la primera grabación mundial (World Premiere Recording) de las Canciones Líricas del compositor español Cristóbal Oudrid (1825–1877), interpretadas por la soprano Mar Morán y el pianista Aurelio Viribay.',
+					},
+				},
+				{
+					'@type': 'Question',
+					name: '¿Quién fue Cristóbal Oudrid en la historia de la zarzuela y la canción española?',
+					acceptedAnswer: {
+						'@type': 'Answer',
+						text: 'Cristóbal Oudrid (Badajoz, 1825 – Madrid, 1877) fue uno de los compositores y directores fundamentales del romanticismo musical español, cofundador de la gran zarzuela del siglo XIX y autor de un valioso catálogo de canciones líricas españolas para voz y piano.',
+					},
+				},
+				{
+					'@type': 'Question',
+					name: '¿Qué canciones de Cristóbal Oudrid incluye el disco «La Salerosa»?',
+					acceptedAnswer: {
+						'@type': 'Answer',
+						text: 'El álbum reúne 16 canciones líricas españolas: La Macarena, La Salerosa, Soledad, La hamaca, La pajarita, La huevera de Fuencarral, Malagueña, Fugaz Ventura, Tres por ciento, Ojos negros y ojos azules, Nueva rondalla Aragonesa, El torero Rozicler, El mareíto, Me acuerdo, Te acuerdas y El tres por ciento.',
+					},
+				},
+			],
+		},
 	],
 };
 ---
@@ -166,6 +215,25 @@ const jsonLd = {
 			href={`${base}/apple-touch-icon.png`}
 		/>
 		<link rel="canonical" href={canonicalUrl} />
+		<link rel="alternate" hreflang="es" href={canonicalUrl} />
+		<link rel="alternate" hreflang="en" href={`${canonicalUrl}?lang=en`} />
+		<link rel="alternate" hreflang="x-default" href={canonicalUrl} />
+
+		<!-- Preload LCP Hero Image para máxima puntuación en Core Web Vitals -->
+		<link
+			rel="preload"
+			as="image"
+			href={`${base}/portada-la-salerosa-desktop.jpg`}
+			media="(min-width: 640px)"
+			fetchpriority="high"
+		/>
+		<link
+			rel="preload"
+			as="image"
+			href={`${base}/portada-la-salerosa-mobile.jpg`}
+			media="(max-width: 639px)"
+			fetchpriority="high"
+		/>
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<meta name="description" content={description} />
@@ -220,5 +288,6 @@ const jsonLd = {
 	</head>
 	<body class="h-dvh w-full overflow-hidden bg-[#160402] text-[#FFFDF9] font-['Montserrat'] select-none">
 		<slot />
+		<Analytics />
 	</body>
 </html>
