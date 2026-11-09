@@ -9,31 +9,23 @@ const { class: className = "w-[86vw] sm:w-[53vw] max-w-none h-auto" } = Astro.pr
 <svg
 	xmlns="http://www.w3.org/2000/svg"
 	viewBox="0 0 1559 239"
+	width="1559"
+	height="239"
 	fill="none"
 	class={`${className} warm-neon-logo overflow-visible`}
 	role="img"
 	aria-label="La Salerosa"
 >
 	<defs>
-		<!-- Gradiente luminoso animado que recorre las letras como un filamento incandescente -->
-		<linearGradient id="salerosa-neon-grad" x1="0%" y1="0%" x2="200%" y2="0%">
+		<!-- Gradiente luminoso que recorre las letras como un filamento incandescente -->
+		<linearGradient id="salerosa-neon-grad" x1="0%" y1="0%" x2="100%" y2="0%">
 			<stop offset="0%" stop-color="#F7E6CA" />
 			<stop offset="22%" stop-color="#FFFDF9" />
-			<stop offset="28%" stop-color="#FFE3B3" />
-			<stop offset="34%" stop-color="#FFFDF9" />
-			<stop offset="50%" stop-color="#F7E6CA" />
-			<stop offset="72%" stop-color="#FFFDF9" />
-			<stop offset="78%" stop-color="#FFE3B3" />
-			<stop offset="84%" stop-color="#FFFDF9" />
+			<stop offset="35%" stop-color="#FFE3B3" />
+			<stop offset="50%" stop-color="#FFFDF9" />
+			<stop offset="72%" stop-color="#FFE3B3" />
+			<stop offset="85%" stop-color="#FFFDF9" />
 			<stop offset="100%" stop-color="#F7E6CA" />
-			<animateTransform
-				attributeName="gradientTransform"
-				type="translate"
-				from="-0.5 0"
-				to="0 0"
-				dur="5.5s"
-				repeatCount="indefinite"
-			/>
 		</linearGradient>
 	</defs>
 

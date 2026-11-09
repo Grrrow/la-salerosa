@@ -15,13 +15,31 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 			<picture class="block w-full h-full">
 				<source
 					media="(max-width: 639px)"
+					srcset={`${base}/portada-la-salerosa-mobile.webp`}
+					type="image/webp"
+					width="828"
+					height="1472"
+				/>
+				<source
+					media="(max-width: 639px)"
 					srcset={`${base}/portada-la-salerosa-mobile.jpg`}
+					type="image/jpeg"
+					width="1080"
+					height="1920"
+				/>
+				<source
+					media="(min-width: 640px)"
+					srcset={`${base}/portada-la-salerosa-desktop.webp`}
+					type="image/webp"
+					width="1920"
+					height="1080"
 				/>
 				<img
 					src={`${base}/portada-la-salerosa-desktop.jpg`}
 					alt="Mar Morán en la portada de La Salerosa — Canciones Líricas de Cristóbal Oudrid junto al pianista Aurelio Viribay"
+					width="2560"
+					height="1440"
 					fetchpriority="high"
-					decoding="async"
 					class="w-full h-full object-cover object-center select-none pointer-events-none"
 				/>
 			</picture>
@@ -1167,9 +1185,48 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 			let time = 0;
 			const totalLines = 9;
+			let cachedGrads: CanvasGradient[] = [];
+			let lastFrameTime = 0;
 
-			const render = () => {
+			const buildLineGradients = () => {
 				if (!ctx) return;
+				cachedGrads = [];
+				for (let i = 0; i < totalLines; i++) {
+					const ratio = i / (totalLines - 1);
+					const alpha = 0.14 + Math.sin(ratio * Math.PI) * 0.3;
+					const lineGrad = ctx.createLinearGradient(0, 0, width, 0);
+					lineGrad.addColorStop(0, "rgba(242, 159, 56, 0)");
+					lineGrad.addColorStop(
+						0.2,
+						`rgba(242, 159, 56, ${alpha * 0.85})`,
+					);
+					lineGrad.addColorStop(0.5, `rgba(247, 230, 202, ${alpha})`);
+					lineGrad.addColorStop(
+						0.8,
+						`rgba(242, 110, 20, ${alpha * 0.9})`,
+					);
+					lineGrad.addColorStop(1, "rgba(242, 159, 56, 0)");
+					cachedGrads.push(lineGrad);
+				}
+			};
+
+			buildLineGradients();
+			window.addEventListener("resize", buildLineGradients);
+
+			const render = (now: number) => {
+				if (!ctx) return;
+				if (document.hidden) {
+					requestAnimationFrame(render);
+					return;
+				}
+				const isMobileScreen = width < 640;
+				// En móvil limitamos a ~30fps para ahorrar CPU/batería y reducir TBT a 0ms
+				if (isMobileScreen && now - lastFrameTime < 32) {
+					requestAnimationFrame(render);
+					return;
+				}
+				lastFrameTime = now;
+
 				ctx.clearRect(0, 0, width, height);
 
 				pointer.x += (pointer.targetX - pointer.x) * 0.06;
@@ -1177,9 +1234,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 				pointer.energy *= 0.96;
 
 				const audioBoost = isAudioPlaying ? 1.6 : 1.0;
-				time += 0.012 * audioBoost;
+				time += (isMobileScreen ? 0.02 : 0.012) * audioBoost;
 
-				if (pointer.active) {
+				if (pointer.active && pointer.energy > 0.01) {
 					const spotRadius = Math.max(width, height) * 0.28;
 					const spotGrad = ctx.createRadialGradient(
 						pointer.x,
@@ -1209,34 +1266,17 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 				const amplitude =
 					(height * 0.055 + pointer.energy * 18) *
 					(isAudioPlaying ? 1.35 : 1);
+				const steps = isMobileScreen ? 32 : 56;
+				const influenceRadius = width * 0.35;
 
 				for (let i = 0; i < totalLines; i++) {
-					const ratio = i / (totalLines - 1);
 					const phaseOffset = i * 0.22;
 
-					const lineGrad = ctx.createLinearGradient(0, 0, width, 0);
-					const alpha =
-						(0.12 + Math.sin(ratio * Math.PI) * 0.28) *
-						(isAudioPlaying ? 1.25 : 1);
-					lineGrad.addColorStop(0, "rgba(242, 159, 56, 0)");
-					lineGrad.addColorStop(
-						0.2,
-						`rgba(242, 159, 56, ${alpha * 0.85})`,
-					);
-					lineGrad.addColorStop(0.5, `rgba(247, 230, 202, ${alpha})`);
-					lineGrad.addColorStop(
-						0.8,
-						`rgba(242, 110, 20, ${alpha * 0.9})`,
-					);
-					lineGrad.addColorStop(1, "rgba(242, 159, 56, 0)");
-
-					ctx.save();
-					ctx.strokeStyle = lineGrad;
+					ctx.strokeStyle = cachedGrads[i];
 					ctx.lineWidth =
 						i === Math.floor(totalLines / 2) ? 1.5 : 0.85;
 					ctx.beginPath();
 
-					const steps = 64;
 					for (let s = 0; s <= steps; s++) {
 						const u = s / steps;
 						const x = u * width;
@@ -1252,16 +1292,21 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 							) *
 							(amplitude * 0.45);
 
-						const distToPointer = Math.hypot(
-							x - pointer.x,
-							baseY - pointer.y,
-						);
-						const influenceRadius = width * 0.35;
-						const pull =
-							Math.max(0, 1 - distToPointer / influenceRadius) **
-								2 *
-							(pointer.y - baseY) *
-							(0.28 + pointer.energy * 0.25);
+						let pull = 0;
+						if (pointer.active) {
+							const distToPointer = Math.hypot(
+								x - pointer.x,
+								baseY - pointer.y,
+							);
+							if (distToPointer < influenceRadius) {
+								const factor = 1 - distToPointer / influenceRadius;
+								pull =
+									factor *
+									factor *
+									(pointer.y - baseY) *
+									(0.28 + pointer.energy * 0.25);
+							}
+						}
 
 						const y =
 							baseY +
@@ -1278,13 +1323,23 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 					}
 
 					ctx.stroke();
-					ctx.restore();
 				}
 
 				requestAnimationFrame(render);
 			};
 
-			requestAnimationFrame(render);
+			// Diferir el inicio del bucle de animación ambiental tras la carga inicial para dejar 0ms de bloqueo en LCP
+			const startAmbientWaves = () => {
+				window.setTimeout(() => {
+					requestAnimationFrame(render);
+				}, 1200);
+			};
+
+			if (document.readyState === "complete") {
+				startAmbientWaves();
+			} else {
+				window.addEventListener("load", startAmbientWaves, { once: true });
+			}
 		}
 
 		// 2. Constelación de las 16 Canciones del Disco: aparecen poco a poco con pausas limpias entre ellas
@@ -1330,6 +1385,18 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 			const headerEl = document.querySelector("header");
 			const mainEl = document.querySelector("main");
 
+			let cachedMinTopPx = 180;
+			let cachedMaxTopPx = 520;
+			const updateBounds = () => {
+				if (headerEl) {
+					cachedMinTopPx = headerEl.getBoundingClientRect().bottom + 18;
+				}
+				if (mainEl) {
+					cachedMaxTopPx = mainEl.getBoundingClientRect().top - 38;
+				}
+			};
+			window.addEventListener("resize", updateBounds);
+
 			let queue: string[] = [];
 			let lastSong = "";
 			let currentZoneIdx = 0;
@@ -1370,6 +1437,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 			};
 
 			const spawnSongWhisper = () => {
+				if (document.hidden) {
+					scheduleNextWhisper();
+					return;
+				}
 				if (queue.length === 0) refillQueue();
 				const vh = window.innerHeight || 800;
 				const isMobile = window.innerWidth < 640;
@@ -1380,17 +1451,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 				currentZoneIdx++;
 
-				// Calculamos la posición vertical garantizando que nunca pise el <header> ni el <main>
+				// Calculamos la posición vertical sin forzar un reflow síncrono
 				let topPx = (zone.topPct / 100) * vh;
-				if (headerEl) {
-					const minTopPx =
-						headerEl.getBoundingClientRect().bottom + 18;
-					if (topPx < minTopPx) topPx = minTopPx;
-				}
-				if (mainEl) {
-					const maxTopPx = mainEl.getBoundingClientRect().top - 38;
-					if (topPx > maxTopPx) topPx = maxTopPx;
-				}
+				if (topPx < cachedMinTopPx) topPx = cachedMinTopPx;
+				if (topPx > cachedMaxTopPx) topPx = cachedMaxTopPx;
 
 				whisperEl.style.left = zone.left || "";
 				whisperEl.style.right = zone.right || "";
@@ -1413,14 +1477,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 				whisperText.textContent = songTitle;
 
-				// Reiniciamos la animación CSS sin añadir ni eliminar nodos del DOM
-				whisperEl.classList.remove("hidden");
-				whisperEl.classList.add("flex");
-				whisperEl.style.animation = "none";
-				whisperStreak.style.animation = "none";
-				void whisperEl.offsetWidth;
-				whisperEl.style.animation = "";
-				whisperStreak.style.animation = "";
+				// Reiniciamos la animación en el siguiente frame sin forzar reflow síncrono (offsetWidth)
+				requestAnimationFrame(() => {
+					whisperEl.classList.remove("hidden");
+					whisperEl.classList.add("flex");
+				});
 
 				window.setTimeout(() => {
 					whisperEl.classList.add("hidden");
@@ -1429,7 +1490,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 				}, ANIM_DURATION_MS);
 			};
 
-			window.setTimeout(spawnSongWhisper, 900);
+			const startWhisperLoop = () => {
+				updateBounds();
+				window.setTimeout(spawnSongWhisper, 1600);
+			};
+
+			if (document.readyState === "complete") {
+				startWhisperLoop();
+			} else {
+				window.addEventListener("load", startWhisperLoop, { once: true });
+			}
 		}
 	</script>
 </Layout>

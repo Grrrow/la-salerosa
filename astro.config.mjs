@@ -6,6 +6,9 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
 	site: 'https://www.marmoransoprano.com',
 	base: '/lasalerosa',
+	build: {
+		inlineStylesheets: 'always',
+	},
 	vite: {
 		plugins: [tailwindcss()],
 	},

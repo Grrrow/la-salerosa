@@ -219,18 +219,20 @@ const jsonLd = {
 		<link rel="alternate" hreflang="en" href={`${canonicalUrl}?lang=en`} />
 		<link rel="alternate" hreflang="x-default" href={canonicalUrl} />
 
-		<!-- Preload LCP Hero Image para máxima puntuación en Core Web Vitals -->
+		<!-- Preload LCP Hero Image en WebP ligero para máxima puntuación en Core Web Vitals -->
 		<link
 			rel="preload"
 			as="image"
-			href={`${base}/portada-la-salerosa-desktop.jpg`}
+			type="image/webp"
+			href={`${base}/portada-la-salerosa-desktop.webp`}
 			media="(min-width: 640px)"
 			fetchpriority="high"
 		/>
 		<link
 			rel="preload"
 			as="image"
-			href={`${base}/portada-la-salerosa-mobile.jpg`}
+			type="image/webp"
+			href={`${base}/portada-la-salerosa-mobile.webp`}
 			media="(max-width: 639px)"
 			fetchpriority="high"
 		/>
@@ -278,13 +280,26 @@ const jsonLd = {
 			set:html={JSON.stringify(jsonLd)}
 		/>
 
-		<!-- Google Fonts: Pinyon Script (400), Cinzel (400, 500, 600) & Montserrat (200, 300, 500) -->
+		<!-- Google Fonts no bloqueante: Pinyon Script (400), Cinzel (400, 500, 600) & Montserrat (200, 300, 500) -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
+			rel="preload"
+			as="style"
+			href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Montserrat:wght@200;300;500&family=Pinyon+Script&display=swap"
+		/>
+		<link
 			href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Montserrat:wght@200;300;500&family=Pinyon+Script&display=swap"
 			rel="stylesheet"
+			media="print"
+			onload="this.media='all'"
 		/>
+		<noscript>
+			<link
+				href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Montserrat:wght@200;300;500&family=Pinyon+Script&display=swap"
+				rel="stylesheet"
+			/>
+		</noscript>
 	</head>
 	<body class="h-dvh w-full overflow-hidden bg-[#160402] text-[#FFFDF9] font-['Montserrat'] select-none">
 		<slot />
