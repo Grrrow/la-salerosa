@@ -11,7 +11,7 @@ interface Props {
 const {
 	title = 'La Salerosa — Mar Morán y Aurelio Viribay | Canciones Líricas de Cristóbal Oudrid',
 	description = 'Primera grabación mundial de «La Salerosa» y las Canciones Líricas de Cristóbal Oudrid. La soprano Mar Morán y el pianista Aurelio Viribay rescatan joyas inéditas de la canción española y la zarzuela del siglo XIX.',
-	image = '/images/cover-1800.jpg',
+	image = '/images/og-share-1200x630.jpg',
 } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -20,6 +20,7 @@ const siteUrl = (
 ).replace(/\/$/, '');
 const canonicalUrl = siteUrl;
 const ogImageUrl = `${siteUrl}${image.startsWith('/') ? image : `/${image}`}`;
+const albumCoverUrl = `${siteUrl}/images/cover-1800.jpg`;
 const audioPreviewUrl = `${siteUrl}/audio/02-La%20salerosa'web.mp3`;
 
 const tracks = [
@@ -100,7 +101,7 @@ const jsonLd = {
 			name: 'La Salerosa — Canciones Líricas de Cristóbal Oudrid',
 			alternateName: 'La Salerosa (World Premiere Recording)',
 			url: canonicalUrl,
-			image: ogImageUrl,
+			image: albumCoverUrl,
 			datePublished: '2026-11-12',
 			albumProductionType: 'https://schema.org/StudioAlbum',
 			albumReleaseType: 'https://schema.org/AlbumRelease',
@@ -257,8 +258,8 @@ const jsonLd = {
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:image" content={ogImageUrl} />
-		<meta property="og:image:width" content="1800" />
-		<meta property="og:image:height" content="1800" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
 		<meta
 			property="og:image:alt"
 			content="Portada de La Salerosa — Canciones Líricas de Cristóbal Oudrid por la soprano Mar Morán y el pianista Aurelio Viribay"

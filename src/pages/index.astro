@@ -137,7 +137,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 						</span>
 						<span
 							id="sound-toggle-label"
-							class="neon-subtitle font-['Montserrat'] font-light text-[9.5px] sm:text-[10.5px] tracking-[0.26em] uppercase leading-none"
+							class="neon-subtitle font-['Montserrat'] font-light text-[10.5px] sm:text-xs tracking-[0.24em] sm:tracking-[0.26em] uppercase leading-none"
 							>Activar sonido</span
 						>
 						<span
@@ -154,7 +154,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 				<div
 					role="group"
 					aria-label="Selector de idioma / Language selector"
-					class="flex items-center gap-1.5 sm:fixed sm:top-6 sm:right-8 md:top-7 md:right-12 sm:z-30 font-['Montserrat'] text-[9.5px] sm:text-[10.5px] tracking-[0.24em] uppercase animate-fade-up-1"
+					class="flex items-center gap-1.5 sm:fixed sm:top-6 sm:right-8 md:top-7 md:right-12 sm:z-30 font-['Montserrat'] text-[10.5px] sm:text-xs tracking-[0.24em] uppercase animate-fade-up-1"
 				>
 					<button
 						type="button"
@@ -185,30 +185,30 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 					Morán (soprano) y Aurelio Viribay (piano)</span
 				>
 				<LogoLaSalerosa
-					class="w-[86vw] sm:w-[50vw] max-w-none h-auto"
+					class="w-[90vw] sm:w-[54vw] max-w-none h-auto"
 				/>
 			</h1>
 
 			<!-- 2. Subtítulo de Artista ("MAR MORÁN") en #F7E6CA con resplandor cálido -->
 			<p
-				class="neon-subtitle font-['Montserrat'] font-light text-[clamp(0.82rem,1.45vw,1.35rem)] uppercase tracking-[0.65em] text-[#F7E6CA] mt-0.5 sm:mt-1 pl-[0.65em] text-center animate-fade-up-2"
+				class="neon-subtitle font-['Montserrat'] font-light text-[15px] sm:text-[clamp(1.1rem,1.6vw,1.55rem)] uppercase tracking-[0.58em] sm:tracking-[0.65em] text-[#F7E6CA] mt-0.5 sm:mt-1.5 pl-[0.58em] sm:pl-[0.65em] text-center animate-fade-up-2"
 			>
 				MAR MORÁN
 			</p>
 
 			<!-- 3. Créditos de Obra y Piano debajo de Mar Morán y encima de su cabeza -->
 			<div
-				class="font-['Montserrat'] uppercase flex flex-col items-center gap-0.5 mt-1 sm:mt-1.5 text-center animate-fade-up-2"
+				class="font-['Montserrat'] uppercase flex flex-col items-center gap-0.5 sm:gap-1 mt-1 sm:mt-2 text-center animate-fade-up-2"
 			>
 				<p
 					data-i18n="creditsSongs"
-					class="neon-subtitle font-medium tracking-[0.18em] sm:tracking-[0.25em] text-[8.5px] sm:text-[11px] md:text-xs text-[#F7E6CA] pl-[0.18em] sm:pl-[0.25em]"
+					class="neon-subtitle font-medium tracking-[0.15em] sm:tracking-[0.25em] text-[10px] sm:text-xs md:text-[13px] text-[#F7E6CA] pl-[0.15em] sm:pl-[0.25em]"
 				>
 					CANCIONES LÍRICAS DE CRISTÓBAL OUDRID
 				</p>
 				<p
 					data-i18n="creditsPiano"
-					class="neon-subtitle font-medium tracking-[0.22em] sm:tracking-[0.28em] text-[8.5px] sm:text-[11px] md:text-xs text-[#F7E6CA] pl-[0.22em] sm:pl-[0.28em]"
+					class="neon-subtitle font-medium tracking-[0.2em] sm:tracking-[0.28em] text-[10px] sm:text-xs md:text-[13px] text-[#F7E6CA] pl-[0.2em] sm:pl-[0.28em]"
 				>
 					AURELIO VIRIBAY · PIANO
 				</p>
@@ -226,7 +226,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 		<!-- CAPA 2: Contenedor Principal Inferior Minimalista y Escultórico (z-20) -->
 		<main
-			class="relative z-20 mt-auto w-full max-w-xl mx-auto px-5 pb-2.5 sm:pb-4 text-center flex flex-col items-center"
+			class="relative z-20 mt-auto w-full max-w-xl mx-auto px-4 sm:px-6 pb-2 sm:pb-4 text-center flex flex-col items-center"
 		>
 			<!-- 1. Bloque de Cuenta Atrás del Primer Single -->
 			<div
@@ -234,97 +234,97 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 			>
 				<!-- Etiqueta editorial integrada con filetes de luz que explica qué mide la cuenta atrás -->
 				<div
-					class="flex items-center justify-center gap-2 sm:gap-3.5 mb-2 w-full"
+					class="flex items-center justify-center gap-2.5 sm:gap-3.5 mb-2.5 sm:mb-2 w-full"
 				>
 					<span
-						class="w-5 sm:w-12 h-px shrink-0 bg-gradient-to-r from-transparent to-[#F29F38]/70"
+						class="w-6 sm:w-12 h-px shrink-0 bg-gradient-to-r from-transparent to-[#F29F38]/70"
 						aria-hidden="true"></span>
 					<span
 						data-i18n="countdownBadge"
-						class="font-['Montserrat'] font-medium text-[8.5px] sm:text-[10px] tracking-[0.15em] sm:tracking-[0.28em] uppercase text-[#F29F38] drop-shadow-[0_0_8px_rgba(242,159,56,0.65)] pl-[0.15em] sm:pl-[0.28em] whitespace-nowrap"
+						class="font-['Montserrat'] font-medium text-[11.5px] sm:text-[10px] tracking-[0.16em] sm:tracking-[0.28em] uppercase text-[#F29F38] drop-shadow-[0_0_8px_rgba(242,159,56,0.65)] pl-[0.16em] sm:pl-[0.28em] whitespace-nowrap"
 					>
 						Estreno primer single 12 de Nov
 					</span>
 					<span
-						class="w-5 sm:w-12 h-px shrink-0 bg-gradient-to-l from-transparent to-[#F29F38]/70"
+						class="w-6 sm:w-12 h-px shrink-0 bg-gradient-to-l from-transparent to-[#F29F38]/70"
 						aria-hidden="true"></span>
 				</div>
 
 				<div
 					aria-label="Cuenta atrás para el estreno del primer single"
-					class="flex items-center justify-center gap-3 sm:gap-5"
+					class="flex items-center justify-center gap-4 sm:gap-5"
 				>
 					<div
-						class="flex flex-col items-center min-w-[44px] sm:min-w-[56px]"
+						class="flex flex-col items-center min-w-[62px] sm:min-w-[56px]"
 					>
 						<span
 							id="cd-days"
-							class="neon-subtitle font-['Cinzel'] text-2xl sm:text-3xl md:text-4xl text-[#FFFDF9] tracking-[0.06em] leading-none tabular-nums"
+							class="neon-subtitle font-['Cinzel'] text-[42px] sm:text-3xl md:text-4xl text-[#FFFDF9] tracking-[0.06em] leading-none tabular-nums"
 							>03</span
 						>
 						<span
 							data-i18n="unitDays"
-							class="font-['Montserrat'] text-[8px] sm:text-[9px] tracking-[0.28em] uppercase text-[#D4A383] mt-1 pl-[0.28em]"
+							class="font-['Montserrat'] text-[10.5px] sm:text-[9px] tracking-[0.26em] sm:tracking-[0.28em] uppercase text-[#D4A383] mt-1.5 sm:mt-1 pl-[0.26em] sm:pl-[0.28em]"
 							>Días</span
 						>
 					</div>
 
 					<span
-						class="font-['Cinzel'] text-lg sm:text-2xl text-[#F29F38]/70 -mt-3 select-none"
+						class="font-['Cinzel'] text-2xl sm:text-2xl text-[#F29F38]/70 -mt-4 sm:-mt-3 select-none"
 						>:</span
 					>
 
 					<div
-						class="flex flex-col items-center min-w-[44px] sm:min-w-[56px]"
+						class="flex flex-col items-center min-w-[62px] sm:min-w-[56px]"
 					>
 						<span
 							id="cd-hours"
-							class="neon-subtitle font-['Cinzel'] text-2xl sm:text-3xl md:text-4xl text-[#FFFDF9] tracking-[0.06em] leading-none tabular-nums"
+							class="neon-subtitle font-['Cinzel'] text-[42px] sm:text-3xl md:text-4xl text-[#FFFDF9] tracking-[0.06em] leading-none tabular-nums"
 							>00</span
 						>
 						<span
 							data-i18n="unitHours"
-							class="font-['Montserrat'] text-[8px] sm:text-[9px] tracking-[0.28em] uppercase text-[#D4A383] mt-1 pl-[0.28em]"
+							class="font-['Montserrat'] text-[10.5px] sm:text-[9px] tracking-[0.26em] sm:tracking-[0.28em] uppercase text-[#D4A383] mt-1.5 sm:mt-1 pl-[0.26em] sm:pl-[0.28em]"
 							>Horas</span
 						>
 					</div>
 
 					<span
-						class="font-['Cinzel'] text-lg sm:text-2xl text-[#F29F38]/70 -mt-3 select-none"
+						class="font-['Cinzel'] text-2xl sm:text-2xl text-[#F29F38]/70 -mt-4 sm:-mt-3 select-none"
 						>:</span
 					>
 
 					<div
-						class="flex flex-col items-center min-w-[44px] sm:min-w-[56px]"
+						class="flex flex-col items-center min-w-[62px] sm:min-w-[56px]"
 					>
 						<span
 							id="cd-mins"
-							class="neon-subtitle font-['Cinzel'] text-2xl sm:text-3xl md:text-4xl text-[#FFFDF9] tracking-[0.06em] leading-none tabular-nums"
+							class="neon-subtitle font-['Cinzel'] text-[42px] sm:text-3xl md:text-4xl text-[#FFFDF9] tracking-[0.06em] leading-none tabular-nums"
 							>00</span
 						>
 						<span
 							data-i18n="unitMins"
-							class="font-['Montserrat'] text-[8px] sm:text-[9px] tracking-[0.28em] uppercase text-[#D4A383] mt-1 pl-[0.28em]"
+							class="font-['Montserrat'] text-[10.5px] sm:text-[9px] tracking-[0.26em] sm:tracking-[0.28em] uppercase text-[#D4A383] mt-1.5 sm:mt-1 pl-[0.26em] sm:pl-[0.28em]"
 							>Min</span
 						>
 					</div>
 
 					<span
-						class="font-['Cinzel'] text-lg sm:text-2xl text-[#F29F38]/70 -mt-3 select-none"
+						class="font-['Cinzel'] text-2xl sm:text-2xl text-[#F29F38]/70 -mt-4 sm:-mt-3 select-none"
 						>:</span
 					>
 
 					<div
-						class="flex flex-col items-center min-w-[44px] sm:min-w-[56px]"
+						class="flex flex-col items-center min-w-[62px] sm:min-w-[56px]"
 					>
 						<span
 							id="cd-secs"
-							class="neon-subtitle font-['Cinzel'] text-2xl sm:text-3xl md:text-4xl text-[#F29F38] tracking-[0.06em] leading-none tabular-nums"
+							class="neon-subtitle font-['Cinzel'] text-[42px] sm:text-3xl md:text-4xl text-[#F29F38] tracking-[0.06em] leading-none tabular-nums"
 							>00</span
 						>
 						<span
 							data-i18n="unitSecs"
-							class="font-['Montserrat'] text-[8px] sm:text-[9px] tracking-[0.28em] uppercase text-[#D4A383] mt-1 pl-[0.28em]"
+							class="font-['Montserrat'] text-[10.5px] sm:text-[9px] tracking-[0.26em] sm:tracking-[0.28em] uppercase text-[#D4A383] mt-1.5 sm:mt-1 pl-[0.26em] sm:pl-[0.28em]"
 							>Seg</span
 						>
 					</div>
@@ -332,7 +332,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 			</div>
 
 			<!-- 3. Bloque Minimalista de Aviso de Lanzamiento -->
-			<div class="w-full max-w-md mx-auto animate-fade-up-4">
+			<div class="w-full max-w-lg mx-auto animate-fade-up-4">
 				<!-- ESTADO 1: Cápsula integrada minimalista (#state-form) -->
 				<div id="state-form">
 					<form
@@ -359,13 +359,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 								required
 								placeholder="Tu correo electrónico"
 								aria-label="Tu correo electrónico"
-								class="flex-1 min-w-0 bg-transparent px-3 sm:px-4 py-2 text-[11px] sm:text-sm text-[#FFFDF9] placeholder-[#F7E6CA]/45 font-['Montserrat'] focus:outline-none select-text"
+								class="flex-1 min-w-0 bg-transparent px-3.5 sm:px-4 py-2 sm:py-2.5 text-[13px] sm:text-base text-[#FFFDF9] placeholder-[#F7E6CA]/45 font-['Montserrat'] focus:outline-none select-text"
 							/>
 							<button
 								id="vip-submit-btn"
 								type="submit"
 								data-i18n="ctaSubmit"
-								class="neon-cta rounded-full px-3.5 sm:px-6 py-2.5 bg-gradient-to-r from-[#F29F38] via-[#ffae42] to-[#e08922] hover:from-[#ffc066] hover:to-[#F29F38] text-[#160402] font-['Montserrat'] font-semibold text-[9.5px] sm:text-[11px] tracking-[0.11em] sm:tracking-[0.16em] uppercase whitespace-nowrap transition-all cursor-pointer"
+								class="neon-cta rounded-full px-4 sm:px-7 py-2.5 sm:py-3 bg-gradient-to-r from-[#F29F38] via-[#ffae42] to-[#e08922] hover:from-[#ffc066] hover:to-[#F29F38] text-[#160402] font-['Montserrat'] font-semibold text-[10.5px] sm:text-xs md:text-[13px] tracking-[0.11em] sm:tracking-[0.16em] uppercase whitespace-nowrap transition-all cursor-pointer"
 							>
 								Unirme al estreno
 							</button>
@@ -373,7 +373,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 						<p
 							data-i18n-html="formSubtext"
-							class="font-['Montserrat'] font-light text-[10px] sm:text-xs text-[#F7E6CA]/75 tracking-wide mt-2 leading-relaxed text-balance"
+							class="font-['Montserrat'] font-light text-[11.5px] sm:text-sm text-[#F7E6CA]/75 tracking-wide mt-2 sm:mt-2.5 leading-relaxed text-balance"
 						>
 							Recibe el aviso de salida el <span
 								class="whitespace-nowrap">12 de noviembre</span
@@ -385,25 +385,25 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 						<!-- Consentimiento RGPD minimalista con checkbox joya/editorial a medida -->
 						<div
-							class="mt-2 flex items-center justify-center gap-2 text-[9px] sm:text-[10px] font-['Montserrat'] font-light text-[#F7E6CA]/65 tracking-wider"
+							class="mt-2 sm:mt-2.5 flex flex-wrap items-center justify-center gap-x-1.5 gap-y-1 text-[10px] sm:text-[11.5px] font-['Montserrat'] font-light text-[#F7E6CA]/65 tracking-wider"
 						>
 							<label
 								for="rgpd-consent"
 								class="group inline-flex items-center gap-2 cursor-pointer select-none"
 							>
-								<span class="relative flex items-center justify-center w-3.5 h-3.5">
+								<span class="relative flex items-center justify-center w-3.5 h-3.5 sm:w-4 sm:h-4">
 									<input
 										id="rgpd-consent"
 										name="consent"
 										type="checkbox"
 										required
-										class="peer appearance-none w-3.5 h-3.5 rounded-[4px] bg-[#160402]/80 backdrop-blur-sm border border-[#F7E6CA]/35 group-hover:border-[#F29F38]/75 checked:border-[#F29F38] checked:bg-[#F29F38]/20 checked:shadow-[0_0_10px_rgba(242,159,56,0.55)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#F29F38] transition-all duration-200 cursor-pointer"
+										class="peer appearance-none w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-[4px] bg-[#160402]/80 backdrop-blur-sm border border-[#F7E6CA]/35 group-hover:border-[#F29F38]/75 checked:border-[#F29F38] checked:bg-[#F29F38]/20 checked:shadow-[0_0_10px_rgba(242,159,56,0.55)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#F29F38] transition-all duration-200 cursor-pointer"
 									/>
 									<svg
 										viewBox="0 0 12 12"
 										fill="none"
 										aria-hidden="true"
-										class="pointer-events-none absolute w-2.5 h-2.5 text-[#F29F38] drop-shadow-[0_0_4px_rgba(242,159,56,0.8)] scale-0 peer-checked:scale-100 transition-transform duration-200 ease-out"
+										class="pointer-events-none absolute w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#F29F38] drop-shadow-[0_0_4px_rgba(242,159,56,0.8)] scale-0 peer-checked:scale-100 transition-transform duration-200 ease-out"
 									>
 										<path
 											d="M2.2 6.2L4.8 8.8L9.8 3.2"
@@ -443,7 +443,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 							aria-hidden="true"></span>
 						<p
 							data-i18n="successBadge"
-							class="neon-subtitle font-['Montserrat'] font-light text-[10px] sm:text-[11px] text-[#FFFDF9] tracking-[0.24em] uppercase whitespace-nowrap"
+							class="neon-subtitle font-['Montserrat'] font-light text-[11px] sm:text-xs text-[#FFFDF9] tracking-[0.22em] sm:tracking-[0.24em] uppercase whitespace-nowrap"
 						>
 							✦ Invitación activada para el estreno
 						</p>
@@ -455,7 +455,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 						type="button"
 						id="reopen-welcome-modal"
 						data-i18n="reopenLetter"
-						class="font-['Montserrat'] font-light text-[9.5px] sm:text-[10.5px] text-[#F29F38]/90 hover:text-[#FFFDF9] tracking-[0.18em] uppercase underline decoration-[#F29F38]/50 underline-offset-4 transition-colors cursor-pointer"
+						class="font-['Montserrat'] font-light text-[10.5px] sm:text-xs text-[#F29F38]/90 hover:text-[#FFFDF9] tracking-[0.18em] uppercase underline decoration-[#F29F38]/50 underline-offset-4 transition-colors cursor-pointer"
 					>
 						Leer carta de Mar Morán
 					</button>
@@ -465,7 +465,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 		<!-- CAPA 3: Footer minimalista con Copyright y Contacto -->
 		<footer
-			class="relative z-20 w-full px-4 pb-2.5 sm:pb-3.5 text-center font-['Montserrat'] font-light text-[8.5px] sm:text-[9.5px] tracking-[0.18em] uppercase text-[#F7E6CA]/45 animate-fade-up-4"
+			class="relative z-20 w-full px-4 pb-2.5 sm:pb-3.5 text-center font-['Montserrat'] font-light text-[9.5px] sm:text-[11px] tracking-[0.16em] sm:tracking-[0.18em] uppercase text-[#F7E6CA]/45 animate-fade-up-4"
 		>
 			<span>© 2026 Mar Morán</span>
 			<span class="mx-1.5 text-[#F29F38]/40" aria-hidden="true">·</span>
@@ -1423,7 +1423,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 				"song-whisper hidden absolute flex-col gap-0.5 sm:gap-1 pointer-events-none select-none";
 			const whisperText = document.createElement("p");
 			whisperText.className =
-				"font-['Cinzel'] text-[clamp(0.56rem,2.2vw,0.7rem)] sm:text-[clamp(0.75rem,1.05vw,0.95rem)] tracking-[0.08em] sm:tracking-[0.14em] text-[#F7E6CA]/85 leading-snug max-w-[36vw] sm:max-w-none";
+				"font-['Cinzel'] text-[clamp(0.68rem,2.6vw,0.8rem)] sm:text-[clamp(0.75rem,1.05vw,0.95rem)] tracking-[0.08em] sm:tracking-[0.14em] text-[#F7E6CA]/85 leading-snug max-w-[38vw] sm:max-w-none";
 			const whisperStreak = document.createElement("div");
 			whisperStreak.className =
 				"song-whisper-streak w-[15vw] max-w-[72px] sm:w-28 sm:max-w-none";
