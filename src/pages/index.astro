@@ -2,8 +2,28 @@
 import Layout from "../layouts/Layout.astro";
 import LogoLaSalerosa from "../components/LogoLaSalerosa.astro";
 import LogoWorldPremiere from "../components/LogoWorldPremiere.astro";
+import IconSpotify from "../components/icons/IconSpotify.astro";
+import IconAppleMusic from "../components/icons/IconAppleMusic.astro";
+import IconYouTubeMusic from "../components/icons/IconYouTubeMusic.astro";
+import IconAmazonMusic from "../components/icons/IconAmazonMusic.astro";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+// Enlaces de streaming oficiales (reemplazables por variables de entorno o enlaces directos)
+const streamLinks = {
+	spotify:
+		import.meta.env.PUBLIC_SPOTIFY_URL ||
+		"https://open.spotify.com/track/6vzVsiJX3A8hWGPp65tHg5",
+	apple:
+		import.meta.env.PUBLIC_APPLE_MUSIC_URL ||
+		"https://music.apple.com/es/song/la-salerosa-canci%C3%B3n-espa%C3%B1ola/6823224604",
+	youtube:
+		import.meta.env.PUBLIC_YOUTUBE_MUSIC_URL ||
+		"https://www.youtube.com/watch?v=fi9n3n_liFk",
+	amazon:
+		import.meta.env.PUBLIC_AMAZON_MUSIC_URL ||
+		"https://music.amazon.es/albums/B0HN4Z8V87",
+};
 ---
 
 <Layout>
@@ -43,13 +63,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 					class="w-full h-full object-cover object-center select-none pointer-events-none"
 				/>
 			</picture>
-
-			<!-- Audio del adelanto oficial ("La Salerosa"): se carga bajo demanda solo al hacer clic -->
-			<audio
-				id="preview-audio"
-				data-src={`${base}/audio/02-La%20salerosa'web.mp3`}
-				loop
-				preload="none"></audio>
 		</div>
 
 		<!-- Overlays de lectura, Ondas Armónicas Interactivas y Constelación de Canciones (Capa z-10, pointer-events-none) -->
@@ -97,70 +110,92 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 		<!-- CAPA 1: Bloque Superior — Título "LA SALEROSA" de brazo a brazo, "MAR MORÁN" y créditos encima de la cabeza -->
 		<header
-			class="relative z-20 w-full px-4 pt-2.5 sm:px-8 sm:pt-5 md:pt-6 flex flex-col items-center"
+			class="relative z-20 w-full px-4 pt-2.5 sm:px-8 sm:pt-4 md:pt-5 flex flex-col items-center"
 		>
-			<!-- Barra de controles editoriales sin caja: en móvil arriba centrados (Sonido + ES/EN); en desktop Sonido abajo-derecha y Selector ES/EN arriba-derecha -->
+			<!-- Barra superior unificada (Móvil y Desktop): Reclamo primer single + 4 iconos + Selector ES/EN (100% limpio, sin cajas ni solapamientos) -->
 			<div
-				class="relative z-30 w-full flex items-center justify-center gap-4 sm:gap-0 mb-1 sm:mb-0"
+				class="relative z-30 w-full flex items-center justify-center gap-2.5 sm:gap-4 mb-5 sm:mb-0 animate-fade-up-1"
 			>
-				<div
-					class="sm:fixed sm:bottom-8 sm:right-8 md:bottom-10 md:right-12 sm:z-30 animate-fade-up-1"
+				<span
+					class="neon-subtitle font-['Montserrat'] font-medium text-[10.5px] sm:text-xs md:text-[13px] tracking-[0.18em] sm:tracking-[0.24em] uppercase text-[#F29F38] drop-shadow-[0_0_8px_rgba(242,159,56,0.6)] select-none whitespace-nowrap"
 				>
-					<button
-						id="sound-toggle"
-						type="button"
-						data-sound-active="false"
-						aria-pressed="false"
-						aria-label="Activar sonido del adelanto"
-						class="group py-1.5 px-2 flex items-center gap-2.5 text-[#F7E6CA]/85 hover:text-[#FFFDF9] transition-all cursor-pointer"
+					<span data-i18n="streamCalloutMobile" class="sm:hidden"
+						>Primer single:</span
 					>
-						<!-- Onda armónica centrada en el eje del texto (5 barritas simétricas) -->
-						<span
-							class="flex items-center gap-[2.5px] h-3"
-							aria-hidden="true"
-						>
-							<span
-								class="sound-bar w-[1.5px] h-full rounded-full bg-[#F29F38]/80 group-hover:bg-[#F29F38]"
-							></span>
-							<span
-								class="sound-bar w-[1.5px] h-full rounded-full bg-[#F29F38]/90 group-hover:bg-[#F29F38]"
-							></span>
-							<span
-								class="sound-bar w-[1.5px] h-full rounded-full bg-[#F29F38] group-hover:bg-[#FFFDF9]"
-							></span>
-							<span
-								class="sound-bar w-[1.5px] h-full rounded-full bg-[#F29F38]/90 group-hover:bg-[#F29F38]"
-							></span>
-							<span
-								class="sound-bar w-[1.5px] h-full rounded-full bg-[#F29F38]/80 group-hover:bg-[#F29F38]"
-							></span>
-						</span>
-						<span
-							id="sound-toggle-label"
-							class="neon-subtitle font-['Montserrat'] font-light text-[10.5px] sm:text-xs tracking-[0.24em] sm:tracking-[0.26em] uppercase leading-none"
-							>Activar sonido</span
-						>
-						<span
-							class="hidden sm:block w-6 h-px bg-gradient-to-r from-[#F29F38]/60 to-transparent transition-all duration-300 group-hover:w-9 group-hover:from-[#F29F38]"
-							aria-hidden="true"></span>
-					</button>
+					<span data-i18n="streamCallout" class="hidden sm:inline"
+						>✦ Escucha el primer single «La Salerosa»:</span
+					>
+				</span>
+
+				<div class="flex items-center gap-1.5 sm:gap-2">
+					<!-- Spotify -->
+					<a
+						href={streamLinks.spotify}
+						target="_blank"
+						rel="noopener noreferrer"
+						data-stream-platform="spotify"
+						aria-label="Escuchar «La Salerosa» en Spotify"
+						title="Spotify"
+						class="flex items-center justify-center w-7.5 h-7.5 sm:w-8 sm:h-8 rounded-full bg-[#160402]/90 border border-[#F7E6CA]/30 hover:border-[#1DB954] hover:bg-[#1DB954]/25 hover:shadow-[0_0_12px_rgba(29,185,84,0.5)] hover:scale-110 active:scale-95 transition-all cursor-pointer shadow-[0_0_8px_rgba(0,0,0,0.5)]"
+					>
+						<IconSpotify class="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+					</a>
+
+					<!-- Apple Music -->
+					<a
+						href={streamLinks.apple}
+						target="_blank"
+						rel="noopener noreferrer"
+						data-stream-platform="apple"
+						aria-label="Escuchar «La Salerosa» en Apple Music"
+						title="Apple Music"
+						class="flex items-center justify-center w-7.5 h-7.5 sm:w-8 sm:h-8 rounded-full bg-[#160402]/90 border border-[#F7E6CA]/30 hover:border-[#FA2D48] hover:bg-[#FA2D48]/25 hover:shadow-[0_0_12px_rgba(250,45,72,0.5)] hover:scale-110 active:scale-95 transition-all cursor-pointer shadow-[0_0_8px_rgba(0,0,0,0.5)]"
+					>
+						<IconAppleMusic class="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+					</a>
+
+					<!-- YouTube -->
+					<a
+						href={streamLinks.youtube}
+						target="_blank"
+						rel="noopener noreferrer"
+						data-stream-platform="youtube"
+						aria-label="Escuchar «La Salerosa» en YouTube"
+						title="YouTube"
+						class="flex items-center justify-center w-7.5 h-7.5 sm:w-8 sm:h-8 rounded-full bg-[#160402]/90 border border-[#F7E6CA]/30 hover:border-[#FF0000] hover:bg-[#FF0000]/25 hover:shadow-[0_0_12px_rgba(255,0,0,0.5)] hover:scale-110 active:scale-95 transition-all cursor-pointer shadow-[0_0_8px_rgba(0,0,0,0.5)]"
+					>
+						<IconYouTubeMusic class="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+					</a>
+
+					<!-- Amazon Music -->
+					<a
+						href={streamLinks.amazon}
+						target="_blank"
+						rel="noopener noreferrer"
+						data-stream-platform="amazon"
+						aria-label="Escuchar «La Salerosa» en Amazon Music"
+						title="Amazon Music"
+						class="flex items-center justify-center w-7.5 h-7.5 sm:w-8 sm:h-8 rounded-full bg-[#160402]/90 border border-[#F7E6CA]/30 hover:border-[#00A8E1] hover:bg-[#00A8E1]/25 hover:shadow-[0_0_12px_rgba(0,168,225,0.5)] hover:scale-110 active:scale-95 transition-all cursor-pointer shadow-[0_0_8px_rgba(0,0,0,0.5)]"
+					>
+						<IconAmazonMusic class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+					</a>
 				</div>
 
 				<span
-					class="sm:hidden w-px h-3 bg-[#F7E6CA]/25"
+					class="w-px h-3.5 sm:h-4 bg-[#F7E6CA]/35 select-none"
 					aria-hidden="true"></span>
 
-				<!-- Selector de idioma editorial ES / EN -->
+				<!-- Selector de idioma ES / EN -->
 				<div
 					role="group"
 					aria-label="Selector de idioma / Language selector"
-					class="flex items-center gap-1.5 sm:fixed sm:top-6 sm:right-8 md:top-7 md:right-12 sm:z-30 font-['Montserrat'] text-[10.5px] sm:text-xs tracking-[0.24em] uppercase animate-fade-up-1"
+					class="flex items-center gap-1 font-['Montserrat'] text-[11px] sm:text-xs tracking-[0.22em] uppercase"
 				>
 					<button
 						type="button"
 						data-lang-btn="es"
 						aria-pressed="true"
-						class="neon-subtitle font-medium text-[#F29F38] hover:text-[#FFFDF9] transition-colors px-1.5 py-1 cursor-pointer"
+						class="neon-subtitle font-medium text-[#F29F38] hover:text-[#FFFDF9] transition-colors px-1 py-0.5 cursor-pointer"
 					>
 						ES
 					</button>
@@ -169,7 +204,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 						type="button"
 						data-lang-btn="en"
 						aria-pressed="false"
-						class="neon-subtitle font-light text-[#F7E6CA]/55 hover:text-[#FFFDF9] transition-colors px-1.5 py-1 cursor-pointer"
+						class="neon-subtitle font-light text-[#F7E6CA]/60 hover:text-[#FFFDF9] transition-colors px-1 py-0.5 cursor-pointer"
 					>
 						EN
 					</button>
@@ -185,7 +220,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 					Morán (soprano) y Aurelio Viribay (piano)</span
 				>
 				<LogoLaSalerosa
-					class="w-[90vw] sm:w-[54vw] max-w-none h-auto"
+					class="w-[94vw] sm:w-[46vw] md:w-[42vw] lg:w-[38vw] max-w-[620px] h-auto"
 				/>
 			</h1>
 
@@ -219,120 +254,122 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 		<div
 			class="hidden sm:block fixed bottom-8 left-8 md:bottom-10 md:left-12 z-20 pointer-events-none animate-fade-up-3"
 		>
-			<LogoWorldPremiere
-				class="w-28 md:w-32 lg:w-36 h-auto opacity-95"
-			/>
+			<LogoWorldPremiere class="w-28 md:w-32 lg:w-36 h-auto opacity-95" />
 		</div>
 
 		<!-- CAPA 2: Contenedor Principal Inferior Minimalista y Escultórico (z-20) -->
 		<main
-			class="relative z-20 mt-auto w-full max-w-xl mx-auto px-4 sm:px-6 pb-2 sm:pb-4 text-center flex flex-col items-center"
+			class="relative z-20 mt-auto w-full max-w-xl mx-auto px-4 sm:px-6 pb-2 sm:pb-3.5 text-center flex flex-col items-center"
 		>
-			<!-- 1. Bloque de Cuenta Atrás del Primer Single -->
+			<!-- 1. Bloque de Cuenta Atrás del Segundo Single «Soledad» (11 de Diciembre) -->
 			<div
-				class="flex flex-col items-center mb-4 sm:mb-5 animate-fade-up-3"
+				id="countdown-container"
+				class="flex flex-col items-center mb-2.5 sm:mb-3 animate-fade-up-3"
 			>
 				<!-- Etiqueta editorial integrada con filetes de luz que explica qué mide la cuenta atrás -->
 				<div
-					class="flex items-center justify-center gap-2.5 sm:gap-3.5 mb-2.5 sm:mb-2 w-full"
+					class="flex items-center justify-center gap-2 sm:gap-3 mb-1.5 sm:mb-1 w-full"
 				>
 					<span
-						class="w-6 sm:w-12 h-px shrink-0 bg-gradient-to-r from-transparent to-[#F29F38]/70"
+						class="w-5 sm:w-10 h-px shrink-0 bg-gradient-to-r from-transparent to-[#F29F38]/70"
 						aria-hidden="true"></span>
 					<span
 						data-i18n="countdownBadge"
-						class="font-['Montserrat'] font-medium text-[11.5px] sm:text-[10px] tracking-[0.16em] sm:tracking-[0.28em] uppercase text-[#F29F38] drop-shadow-[0_0_8px_rgba(242,159,56,0.65)] pl-[0.16em] sm:pl-[0.28em] whitespace-nowrap"
+						class="font-['Montserrat'] font-medium text-[10.5px] sm:text-[10px] tracking-[0.16em] sm:tracking-[0.28em] uppercase text-[#F29F38] drop-shadow-[0_0_8px_rgba(242,159,56,0.65)] pl-[0.16em] sm:pl-[0.28em] whitespace-nowrap"
 					>
-						Estreno primer single 12 de Nov
+						Estreno segundo single «Soledad» · 11 de Dic
 					</span>
 					<span
-						class="w-6 sm:w-12 h-px shrink-0 bg-gradient-to-l from-transparent to-[#F29F38]/70"
+						class="w-5 sm:w-10 h-px shrink-0 bg-gradient-to-l from-transparent to-[#F29F38]/70"
 						aria-hidden="true"></span>
 				</div>
 
 				<div
-					aria-label="Cuenta atrás para el estreno del primer single"
-					class="flex items-center justify-center gap-4 sm:gap-5.5 md:gap-6"
+					aria-label="Cuenta atrás para el estreno del segundo single Soledad"
+					class="flex items-center justify-center gap-3.5 sm:gap-5 md:gap-5.5"
 				>
 					<div
-						class="flex flex-col items-center min-w-[62px] sm:min-w-[64px] md:min-w-[70px]"
+						class="flex flex-col items-center min-w-[56px] sm:min-w-[62px] md:min-w-[66px]"
 					>
 						<span
 							id="cd-days"
-							class="neon-subtitle font-['Cinzel'] text-[42px] sm:text-[34px] md:text-[39px] text-[#FFFDF9] tracking-[0.06em] leading-none tabular-nums"
-							>03</span
+							class="neon-subtitle font-['Cinzel'] text-[34px] sm:text-[30px] md:text-[34px] text-[#FFFDF9] tracking-[0.06em] leading-none tabular-nums"
+							>29</span
 						>
 						<span
 							data-i18n="unitDays"
-							class="font-['Montserrat'] text-[10.5px] sm:text-[9.5px] tracking-[0.26em] sm:tracking-[0.28em] uppercase text-[#D4A383] mt-1.5 sm:mt-1 pl-[0.26em] sm:pl-[0.28em]"
+							class="font-['Montserrat'] text-[9.5px] sm:text-[8.5px] tracking-[0.26em] sm:tracking-[0.28em] uppercase text-[#D4A383] mt-1 pl-[0.26em] sm:pl-[0.28em]"
 							>Días</span
 						>
 					</div>
 
 					<span
-						class="font-['Cinzel'] text-2xl sm:text-[23px] md:text-2xl text-[#F29F38]/70 -mt-4 sm:-mt-3 select-none"
+						class="font-['Cinzel'] text-xl sm:text-[20px] md:text-xl text-[#F29F38]/70 -mt-3.5 sm:-mt-2.5 select-none"
 						>:</span
 					>
 
 					<div
-						class="flex flex-col items-center min-w-[62px] sm:min-w-[64px] md:min-w-[70px]"
+						class="flex flex-col items-center min-w-[56px] sm:min-w-[62px] md:min-w-[66px]"
 					>
 						<span
 							id="cd-hours"
-							class="neon-subtitle font-['Cinzel'] text-[42px] sm:text-[34px] md:text-[39px] text-[#FFFDF9] tracking-[0.06em] leading-none tabular-nums"
+							class="neon-subtitle font-['Cinzel'] text-[34px] sm:text-[30px] md:text-[34px] text-[#FFFDF9] tracking-[0.06em] leading-none tabular-nums"
 							>00</span
 						>
 						<span
 							data-i18n="unitHours"
-							class="font-['Montserrat'] text-[10.5px] sm:text-[9.5px] tracking-[0.26em] sm:tracking-[0.28em] uppercase text-[#D4A383] mt-1.5 sm:mt-1 pl-[0.26em] sm:pl-[0.28em]"
+							class="font-['Montserrat'] text-[9.5px] sm:text-[8.5px] tracking-[0.26em] sm:tracking-[0.28em] uppercase text-[#D4A383] mt-1 pl-[0.26em] sm:pl-[0.28em]"
 							>Horas</span
 						>
 					</div>
 
 					<span
-						class="font-['Cinzel'] text-2xl sm:text-[23px] md:text-2xl text-[#F29F38]/70 -mt-4 sm:-mt-3 select-none"
+						class="font-['Cinzel'] text-xl sm:text-[20px] md:text-xl text-[#F29F38]/70 -mt-3.5 sm:-mt-2.5 select-none"
 						>:</span
 					>
 
 					<div
-						class="flex flex-col items-center min-w-[62px] sm:min-w-[64px] md:min-w-[70px]"
+						class="flex flex-col items-center min-w-[56px] sm:min-w-[62px] md:min-w-[66px]"
 					>
 						<span
 							id="cd-mins"
-							class="neon-subtitle font-['Cinzel'] text-[42px] sm:text-[34px] md:text-[39px] text-[#FFFDF9] tracking-[0.06em] leading-none tabular-nums"
+							class="neon-subtitle font-['Cinzel'] text-[34px] sm:text-[30px] md:text-[34px] text-[#FFFDF9] tracking-[0.06em] leading-none tabular-nums"
 							>00</span
 						>
 						<span
 							data-i18n="unitMins"
-							class="font-['Montserrat'] text-[10.5px] sm:text-[9.5px] tracking-[0.26em] sm:tracking-[0.28em] uppercase text-[#D4A383] mt-1.5 sm:mt-1 pl-[0.26em] sm:pl-[0.28em]"
+							class="font-['Montserrat'] text-[9.5px] sm:text-[8.5px] tracking-[0.26em] sm:tracking-[0.28em] uppercase text-[#D4A383] mt-1 pl-[0.26em] sm:pl-[0.28em]"
 							>Min</span
 						>
 					</div>
 
 					<span
-						class="font-['Cinzel'] text-2xl sm:text-[23px] md:text-2xl text-[#F29F38]/70 -mt-4 sm:-mt-3 select-none"
+						class="font-['Cinzel'] text-xl sm:text-[20px] md:text-xl text-[#F29F38]/70 -mt-3.5 sm:-mt-2.5 select-none"
 						>:</span
 					>
 
 					<div
-						class="flex flex-col items-center min-w-[62px] sm:min-w-[64px] md:min-w-[70px]"
+						class="flex flex-col items-center min-w-[56px] sm:min-w-[62px] md:min-w-[66px]"
 					>
 						<span
 							id="cd-secs"
-							class="neon-subtitle font-['Cinzel'] text-[42px] sm:text-[34px] md:text-[39px] text-[#F29F38] tracking-[0.06em] leading-none tabular-nums"
+							class="neon-subtitle font-['Cinzel'] text-[34px] sm:text-[30px] md:text-[34px] text-[#F29F38] tracking-[0.06em] leading-none tabular-nums"
 							>00</span
 						>
 						<span
 							data-i18n="unitSecs"
-							class="font-['Montserrat'] text-[10.5px] sm:text-[9.5px] tracking-[0.26em] sm:tracking-[0.28em] uppercase text-[#D4A383] mt-1.5 sm:mt-1 pl-[0.26em] sm:pl-[0.28em]"
+							class="font-['Montserrat'] text-[9.5px] sm:text-[8.5px] tracking-[0.26em] sm:tracking-[0.28em] uppercase text-[#D4A383] mt-1 pl-[0.26em] sm:pl-[0.28em]"
 							>Seg</span
 						>
 					</div>
 				</div>
 			</div>
 
-			<!-- 3. Bloque Minimalista de Aviso de Lanzamiento -->
-			<div class="w-full max-w-lg mx-auto animate-fade-up-4">
+			<!-- 3. Bloque de Llamada a la Acción para el estreno de «Soledad» -->
+			<div
+				id="countdown-form-block"
+				class="w-full max-w-lg mx-auto animate-fade-up-4"
+			>
 				<!-- ESTADO 1: Cápsula integrada minimalista (#state-form) -->
 				<div id="state-form">
 					<form
@@ -375,8 +412,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 							data-i18n-html="formSubtext"
 							class="font-['Montserrat'] font-light text-[11.5px] sm:text-sm text-[#F7E6CA]/75 tracking-wide mt-2 sm:mt-2.5 leading-relaxed text-balance"
 						>
-							Recibe el aviso de salida el <span
-								class="whitespace-nowrap">12 de noviembre</span
+							Recibe el aviso de salida de <strong
+								class="font-medium text-[#FFFDF9]"
+								>«Soledad»</strong
+							> el <span class="whitespace-nowrap"
+								>11 de diciembre</span
 							> y descubre los secretos de esta <strong
 								class="font-medium text-[#F7E6CA]/95"
 								>primera grabación mundial</strong
@@ -391,7 +431,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 								for="rgpd-consent"
 								class="group inline-flex items-center gap-2 cursor-pointer select-none"
 							>
-								<span class="relative flex items-center justify-center w-3.5 h-3.5 sm:w-4 sm:h-4">
+								<span
+									class="relative flex items-center justify-center w-3.5 h-3.5 sm:w-4 sm:h-4"
+								>
 									<input
 										id="rgpd-consent"
 										name="consent"
@@ -513,22 +555,59 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 			</ul>
 			<h3>Repertorio completo del disco «La Salerosa» (16 canciones)</h3>
 			<ol>
-				<li>La Macarena — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
-				<li>La Salerosa — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
+				<li>
+					La Macarena — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)
+				</li>
+				<li>
+					La Salerosa — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)
+				</li>
 				<li>Soledad — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
-				<li>La hamaca — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
-				<li>La pajarita — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
-				<li>La huevera de Fuencarral — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
-				<li>Malagueña — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
-				<li>Fugaz Ventura — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
-				<li>Tres por ciento — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
-				<li>Ojos negros y ojos azules — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
-				<li>Nueva rondalla Aragonesa — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
-				<li>El torero Rozicler — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
-				<li>El mareíto — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
-				<li>Me acuerdo — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
-				<li>Te acuerdas — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
-				<li>El tres por ciento — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)</li>
+				<li>
+					La hamaca — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)
+				</li>
+				<li>
+					La pajarita — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)
+				</li>
+				<li>
+					La huevera de Fuencarral — Cristóbal Oudrid (Mar Morán,
+					Aurelio Viribay)
+				</li>
+				<li>
+					Malagueña — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)
+				</li>
+				<li>
+					Fugaz Ventura — Cristóbal Oudrid (Mar Morán, Aurelio
+					Viribay)
+				</li>
+				<li>
+					Tres por ciento — Cristóbal Oudrid (Mar Morán, Aurelio
+					Viribay)
+				</li>
+				<li>
+					Ojos negros y ojos azules — Cristóbal Oudrid (Mar Morán,
+					Aurelio Viribay)
+				</li>
+				<li>
+					Nueva rondalla Aragonesa — Cristóbal Oudrid (Mar Morán,
+					Aurelio Viribay)
+				</li>
+				<li>
+					El torero Rozicler — Cristóbal Oudrid (Mar Morán, Aurelio
+					Viribay)
+				</li>
+				<li>
+					El mareíto — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)
+				</li>
+				<li>
+					Me acuerdo — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)
+				</li>
+				<li>
+					Te acuerdas — Cristóbal Oudrid (Mar Morán, Aurelio Viribay)
+				</li>
+				<li>
+					El tres por ciento — Cristóbal Oudrid (Mar Morán, Aurelio
+					Viribay)
+				</li>
 			</ol>
 			<div lang="en">
 				<h3>
@@ -618,7 +697,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 				</div>
 
 				<!-- Firma caligráfica de Mar Morán -->
-				<div class="mt-5 pt-4 border-t border-[#F7E6CA]/15 flex flex-col items-center">
+				<div
+					class="mt-5 pt-4 border-t border-[#F7E6CA]/15 flex flex-col items-center"
+				>
 					<span
 						data-i18n="welcomeSignoff"
 						class="font-['Montserrat'] font-light text-[10px] tracking-[0.22em] uppercase text-[#D4A383] mb-1 pl-[0.22em]"
@@ -681,7 +762,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 							>Finalidad:</strong
 						> Gestionar tu suscripción a la lista de espera para enviarte
 						el aviso de lanzamiento del single y álbum <em
-							>«La Salerosa — Canciones Líricas de Cristóbal Oudrid»</em
+							>«La Salerosa — Canciones Líricas de Cristóbal
+							Oudrid»</em
 						>, así como contenido exclusivo sobre esta primera
 						grabación mundial.
 					</p>
@@ -710,7 +792,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 							>info@marmoransoprano.com</a
 						>.
 					</p>
-					<p class="text-[10px] text-[#F7E6CA]/55 pt-1 border-t border-[#F7E6CA]/15">
+					<p
+						class="text-[10px] text-[#F7E6CA]/55 pt-1 border-t border-[#F7E6CA]/15"
+					>
 						Esta página no utiliza cookies publicitarias ni de
 						seguimiento de terceros.
 					</p>
@@ -726,13 +810,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 		const translations: Record<Lang, Record<string, string>> = {
 			es: {
-				soundActivate: "Activar sonido",
-				soundMute: "Silenciar adelanto",
-				soundAriaActivate: "Activar sonido del adelanto",
-				soundAriaMute: "Silenciar adelanto",
+				streamCallout: "✦ Escucha el primer single «La Salerosa»:",
+				streamCalloutMobile: "Primer single:",
+				streamHeader: "Escucha el single «La Salerosa»",
+				streamSubtext:
+					"Disponible en todas las plataformas digitales de streaming",
 				creditsSongs: "CANCIONES LÍRICAS DE CRISTÓBAL OUDRID",
 				creditsPiano: "AURELIO VIRIBAY · PIANO",
-				countdownBadge: "Estreno primer single 12 de Nov",
+				countdownBadge: "Estreno segundo single «Soledad» · 11 de Dic",
 				unitDays: "Días",
 				unitHours: "Horas",
 				unitMins: "Min",
@@ -741,18 +826,18 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 				ctaSubmit: "Unirme al estreno",
 				ctaLoading: "Activando...",
 				formSubtext:
-					'Recibe el aviso de salida el <span class="whitespace-nowrap">12 de noviembre</span> y descubre los secretos de esta <strong class="font-medium text-[#F7E6CA]/95">primera grabación mundial</strong>.',
+					'Recibe el aviso de salida de <strong class="font-medium text-[#FFFDF9]">«Soledad»</strong> el <span class="whitespace-nowrap">11 de diciembre</span> y descubre los secretos de esta <strong class="font-medium text-[#F7E6CA]/95">primera grabación mundial</strong>.',
 				rgpdPrefix: "Acepto recibir el aviso del estreno y la",
 				rgpdLink: "Política de Privacidad",
 				footerContact: "Contacto:",
 				successBadge: "✦ Invitación activada para el estreno",
 				reopenLetter: "Leer carta de Mar Morán",
-				welcomeBadge: "Invitación confirmada · 12 Nov",
+				welcomeBadge: "Invitación confirmada · 11 Dic",
 				welcomeTitle: "Gracias por estar al otro lado",
 				welcomeBody: `
-					<p>Qué ilusión saber que me acompañarás cuando <strong class="font-medium text-[#FFFDF9]">«La Salerosa»</strong> vea por fin la luz.</p>
+					<p>Qué ilusión saber que me acompañarás en el estreno de <strong class="font-medium text-[#FFFDF9]">«Soledad»</strong>.</p>
 					<p>Dar vida junto al maestro <strong class="font-medium text-[#FFFDF9]">Aurelio Viribay</strong> a estas <em>Canciones Líricas de Cristóbal Oudrid</em> —en su <strong class="font-medium text-[#FFFDF9]">primera grabación mundial</strong>— ha sido un viaje de emoción, raíz y belleza que deseaba compartir contigo en primicia.</p>
-					<p>El próximo <strong class="font-medium text-[#FFFDF9]">12 de noviembre</strong> recibirás en tu correo el acceso directo al estreno del primer single y detalles inéditos del proyecto.</p>
+					<p>El próximo <strong class="font-medium text-[#FFFDF9]">11 de diciembre</strong> recibirás en tu correo el acceso directo al estreno del nuevo single y detalles inéditos del proyecto.</p>
 				`,
 				welcomeSignoff: "Con todo mi cariño,",
 				privacyTitle: "Política de Privacidad",
@@ -766,13 +851,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 				`,
 			},
 			en: {
-				soundActivate: "Enable sound",
-				soundMute: "Mute preview",
-				soundAriaActivate: "Enable audio preview",
-				soundAriaMute: "Mute audio preview",
+				streamCallout: "✦ Listen to the first single “La Salerosa”:",
+				streamCalloutMobile: "First single:",
+				streamHeader: "Listen to the single “La Salerosa”",
+				streamSubtext: "Available on all digital streaming platforms",
 				creditsSongs: "LYRIC SONGS BY CRISTÓBAL OUDRID",
 				creditsPiano: "AURELIO VIRIBAY · PIANO",
-				countdownBadge: "First single premiere Nov 12",
+				countdownBadge: "Second single premiere “Soledad” · Dec 11",
 				unitDays: "Days",
 				unitHours: "Hours",
 				unitMins: "Min",
@@ -781,18 +866,18 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 				ctaSubmit: "Join the premiere",
 				ctaLoading: "Joining...",
 				formSubtext:
-					'Receive the release alert on <span class="whitespace-nowrap">November 12</span> and discover the secrets of this <strong class="font-medium text-[#F7E6CA]/95">world premiere recording</strong>.',
+					'Receive the release alert for <strong class="font-medium text-[#FFFDF9]">“Soledad”</strong> on <span class="whitespace-nowrap">December 11</span> and discover the secrets of this <strong class="font-medium text-[#F7E6CA]/95">world premiere recording</strong>.',
 				rgpdPrefix: "I agree to receive the premiere alert and the",
 				rgpdLink: "Privacy Policy",
 				footerContact: "Contact:",
 				successBadge: "✦ Premiere invitation activated",
 				reopenLetter: "Read Mar Morán's letter",
-				welcomeBadge: "Invitation confirmed · Nov 12",
+				welcomeBadge: "Invitation confirmed · Dec 11",
 				welcomeTitle: "Thank you for being on the other side",
 				welcomeBody: `
-					<p>What a joy to know you will be with me when <strong class="font-medium text-[#FFFDF9]">“La Salerosa”</strong> finally sees the light.</p>
+					<p>What a joy to know you will be with me for the premiere of <strong class="font-medium text-[#FFFDF9]">“Soledad”</strong>.</p>
 					<p>Bringing to life alongside maestro <strong class="font-medium text-[#FFFDF9]">Aurelio Viribay</strong> these <em>Lyric Songs by Cristóbal Oudrid</em> —in their <strong class="font-medium text-[#FFFDF9]">world premiere recording</strong>— has been a journey of emotion, heritage, and beauty that I wished to share with you first.</p>
-					<p>On <strong class="font-medium text-[#FFFDF9]">November 12</strong>, you will receive direct access to the premiere of the first single and exclusive details about the project in your inbox.</p>
+					<p>On <strong class="font-medium text-[#FFFDF9]">December 11</strong>, you will receive direct access to the premiere of the new single and exclusive details about the project in your inbox.</p>
 				`,
 				welcomeSignoff: "With all my love,",
 				privacyTitle: "Privacy Policy",
@@ -815,7 +900,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 		const welcomeModal = document.getElementById("welcome-modal");
 		const closeWelcomeBtn = document.getElementById("close-welcome-modal");
-		const reopenWelcomeBtn = document.getElementById("reopen-welcome-modal");
+		const reopenWelcomeBtn = document.getElementById(
+			"reopen-welcome-modal",
+		);
 
 		if (openPrivacyBtn && closePrivacyBtn && privacyModal) {
 			openPrivacyBtn.addEventListener("click", () => {
@@ -848,30 +935,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 				welcomeModal?.classList.add("hidden");
 			}
 		});
-		const previewAudio = document.getElementById(
-			"preview-audio",
-		) as HTMLAudioElement | null;
-		const soundToggle = document.getElementById(
-			"sound-toggle",
-		) as HTMLButtonElement | null;
-		const soundLabel = document.getElementById(
-			"sound-toggle-label",
-		) as HTMLSpanElement | null;
-
-		let isAudioPlaying = false;
-		let fadeInterval: number | undefined;
-
-		const updateSoundButtonText = () => {
-			if (!soundToggle || !soundLabel) return;
-			const t = translations[currentLang];
-			soundToggle.setAttribute(
-				"aria-label",
-				isAudioPlaying ? t.soundAriaMute : t.soundAriaActivate,
-			);
-			soundLabel.textContent = isAudioPlaying
-				? t.soundMute
-				: t.soundActivate;
-		};
 
 		const langButtons =
 			document.querySelectorAll<HTMLButtonElement>("[data-lang-btn]");
@@ -906,8 +969,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 				emailInputEl.placeholder = t.emailPlaceholder;
 				emailInputEl.setAttribute("aria-label", t.emailPlaceholder);
 			}
-
-			updateSoundButtonText();
 
 			langButtons.forEach((btn) => {
 				const isSelected = btn.getAttribute("data-lang-btn") === lang;
@@ -951,65 +1012,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 			// Default ES
 		}
 
-		if (previewAudio && soundToggle && soundLabel) {
-			soundToggle.addEventListener("click", () => {
-				const willBeActive = !isAudioPlaying;
-				isAudioPlaying = willBeActive;
-
-				if (fadeInterval) {
-					window.clearInterval(fadeInterval);
-				}
-
-				if (willBeActive) {
-					if (!previewAudio.getAttribute("src") && previewAudio.dataset.src) {
-						previewAudio.src = previewAudio.dataset.src;
-					}
-					previewAudio.volume = 0;
-					previewAudio.play().catch(() => {});
-					try {
-						pageview({
-							route: "/lasalerosa/evento/audio-play",
-							path: "/lasalerosa/evento/audio-play",
-						});
-					} catch {
-						// Ignorar si algún bloqueador detiene la analítica
-					}
-					let vol = 0;
-					fadeInterval = window.setInterval(() => {
-						vol = Math.min(1, vol + 0.08);
-						previewAudio.volume = vol;
-						if (vol >= 1) {
-							window.clearInterval(fadeInterval);
-						}
-					}, 40);
-				} else {
-					let vol = previewAudio.volume;
-					fadeInterval = window.setInterval(() => {
-						vol = Math.max(0, vol - 0.12);
-						previewAudio.volume = vol;
-						if (vol <= 0) {
-							previewAudio.pause();
-							window.clearInterval(fadeInterval);
-						}
-					}, 35);
-				}
-
-				soundToggle.setAttribute(
-					"data-sound-active",
-					String(willBeActive),
-				);
-				soundToggle.setAttribute("aria-pressed", String(willBeActive));
-				updateSoundButtonText();
-			});
-		}
-
-		// Cuenta atrás en vivo hasta el lanzamiento del single (12 de noviembre a las 00:00h)
+		// Cuenta atrás en vivo hasta el lanzamiento del segundo single «Soledad» (11 de diciembre)
 		const cdDays = document.getElementById("cd-days");
 		const cdHours = document.getElementById("cd-hours");
 		const cdMins = document.getElementById("cd-mins");
 		const cdSecs = document.getElementById("cd-secs");
 
-		const releaseDate = new Date("2026-11-12T20:00:00+01:00").getTime();
+		const releaseDate = new Date("2026-12-11T00:00:00+01:00").getTime();
 
 		const updateCountdown = () => {
 			const now = Date.now();
@@ -1028,6 +1037,24 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 		updateCountdown();
 		window.setInterval(updateCountdown, 1000);
+
+		// Seguimiento analítico al hacer clic en las plataformas de streaming
+		document
+			.querySelectorAll<HTMLAnchorElement>("[data-stream-platform]")
+			.forEach((btn) => {
+				btn.addEventListener("click", () => {
+					const platform =
+						btn.getAttribute("data-stream-platform") || "unknown";
+					try {
+						pageview({
+							route: `/lasalerosa/evento/stream-${platform}`,
+							path: `/lasalerosa/evento/stream-${platform}`,
+						});
+					} catch {
+						// Ignorar si hay bloqueador
+					}
+				});
+			});
 
 		const vipForm = document.getElementById(
 			"vip-form",
@@ -1079,12 +1106,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 				if (submitBtn) {
 					submitBtn.disabled = true;
-					submitBtn.textContent = translations[currentLang].ctaLoading;
+					submitBtn.textContent =
+						translations[currentLang].ctaLoading;
 				}
 
 				const payload = {
 					email,
-					single: "La Salerosa",
+					single: "Soledad",
 					artist: "Mar Morán",
 					createdAt: new Date().toISOString(),
 					website: honeypot?.value || "",
@@ -1233,8 +1261,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 				pointer.y += (pointer.targetY - pointer.y) * 0.06;
 				pointer.energy *= 0.96;
 
-				const audioBoost = isAudioPlaying ? 1.6 : 1.0;
-				time += (isMobileScreen ? 0.02 : 0.012) * audioBoost;
+				time += isMobileScreen ? 0.02 : 0.012;
 
 				if (pointer.active && pointer.energy > 0.01) {
 					const spotRadius = Math.max(width, height) * 0.28;
@@ -1263,9 +1290,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 				}
 
 				const baseY = height * 0.24;
-				const amplitude =
-					(height * 0.055 + pointer.energy * 18) *
-					(isAudioPlaying ? 1.35 : 1);
+				const amplitude = height * 0.055 + pointer.energy * 18;
 				const steps = isMobileScreen ? 32 : 56;
 				const influenceRadius = width * 0.35;
 
@@ -1299,7 +1324,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 								baseY - pointer.y,
 							);
 							if (distToPointer < influenceRadius) {
-								const factor = 1 - distToPointer / influenceRadius;
+								const factor =
+									1 - distToPointer / influenceRadius;
 								pull =
 									factor *
 									factor *
@@ -1338,7 +1364,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 			if (document.readyState === "complete") {
 				startAmbientWaves();
 			} else {
-				window.addEventListener("load", startAmbientWaves, { once: true });
+				window.addEventListener("load", startAmbientWaves, {
+					once: true,
+				});
 			}
 		}
 
@@ -1389,7 +1417,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 			let cachedMaxTopPx = 520;
 			const updateBounds = () => {
 				if (headerEl) {
-					cachedMinTopPx = headerEl.getBoundingClientRect().bottom + 18;
+					cachedMinTopPx =
+						headerEl.getBoundingClientRect().bottom + 18;
 				}
 				if (mainEl) {
 					cachedMaxTopPx = mainEl.getBoundingClientRect().top - 38;
@@ -1498,7 +1527,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 			if (document.readyState === "complete") {
 				startWhisperLoop();
 			} else {
-				window.addEventListener("load", startWhisperLoop, { once: true });
+				window.addEventListener("load", startWhisperLoop, {
+					once: true,
+				});
 			}
 		}
 	</script>

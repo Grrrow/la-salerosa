@@ -115,6 +115,10 @@ const jsonLd = {
 			],
 			description:
 				'Primera grabación mundial (World Premiere Recording) de las Canciones Líricas de Cristóbal Oudrid, interpretadas por la soprano Mar Morán y el pianista Aurelio Viribay.',
+			recordLabel: {
+				'@type': 'MusicGroup',
+				name: 'Cezanne Producciones',
+			},
 			byArtist: [
 				{ '@id': 'https://www.marmoransoprano.com/#mar-moran' },
 				{ '@id': `${canonicalUrl}/#aurelio-viribay` },
@@ -138,6 +142,17 @@ const jsonLd = {
 						composer: { '@id': `${canonicalUrl}/#cristobal-oudrid` },
 						...(trackName === 'La Salerosa'
 							? {
+									isrcCode: 'ES69I2602186',
+									sameAs: [
+										'https://open.spotify.com/track/6vzVsiJX3A8hWGPp65tHg5',
+										'https://music.apple.com/es/song/la-salerosa-canci%C3%B3n-espa%C3%B1ola/6823224604',
+										'https://www.youtube.com/watch?v=fi9n3n_liFk',
+										'https://music.amazon.es/albums/B0HN4Z8V87',
+										'https://tidal.com/album/570139979',
+										'https://www.deezer.com/mx/album/1122293652',
+										'https://www.qobuz.com/es-es/album/la-salerosa-cancion-espanola-mar-moran-aurelio-viribay/wjpuh3g7wstv4',
+										'https://www.kkbox.com/tw/tc/song/KqlIyZ3B3UapG7ETTA',
+									],
 									audio: {
 										'@type': 'AudioObject',
 										contentUrl: audioPreviewUrl,
